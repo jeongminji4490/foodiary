@@ -1,0 +1,29 @@
+{
+  "I2790":{
+    "total_count":"81206",
+    "row":[
+      {"NUTR_CONT8":"1.9",
+        "NUTR_CONT9":"0.1",
+        "NUTR_CONT4":"8.5",
+        "NUTR_CONT5":"16.9",
+        "NUTR_CONT6":"1264.31",
+        "NUM":"1",
+        "NUTR_CONT7":"106.18",
+        "NUTR_CONT1":"368.8",
+        "NUTR_CONT2":"39.7",
+        "SUB_REF_NAME":"식약처(\u002716) 제4권",
+        "NUTR_CONT3":"33.5",
+        "RESEARCH_YEAR":"2019",
+        "MAKER_NAME":"",
+        "GROUP_NAME":"",
+        "SERVING_SIZE":"500",
+        "SAMPLING_REGION_NAME":"충주",
+        "SAMPLING_MONTH_CD":"AVG",
+        "SAMPLING_MONTH_NAME":"평균",
+        "DESC_KOR":"꿩불고기",
+        "SAMPLING_REGION_CD":"94",
+        "FOOD_CD":"D000006"}
+    ],
+    "RESULT":{"MSG":"정상처리되었습니다.","CODE":"INFO-000"}
+  }
+}
