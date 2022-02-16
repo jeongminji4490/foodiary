@@ -26,16 +26,16 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val retrofit=Retrofit.Builder()
-            .baseUrl("https://openapi.foodsafetykorea.go.kr/api/")
+            .baseUrl("https://openapi.foodsafetykorea.go.kr/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build()
 
         val foodService=retrofit.create(FoodService::class.java) //retrofit 객체 생성
 
-        foodService.getFoodName("af2bd97db6b846529d0e","I2790","json","1","5")
-            .enqueue(object: Callback<FoodDto>{
-                override fun onResponse(call: Call<FoodDto>, response: Response<FoodDto>) {
+        foodService.getFoodName("af2bd97db6b846529d0e","I2790","json","1","1")
+            .enqueue(object: Callback<FoodList>{
+                override fun onResponse(call: Call<FoodList>, response: Response<FoodList>) {
                     //TODO("Not yet implemented")
                     if (response.isSuccessful.not()){
                         //Log.e(TAG,"조회 실패")
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<FoodDto>, t: Throwable) {
+                override fun onFailure(call: Call<FoodList>, t: Throwable) {
                     //TODO("Not yet implemented")
                     Log.e(TAG,"연결 실패 ㅠ")
                     Log.e(TAG,t.toString())
