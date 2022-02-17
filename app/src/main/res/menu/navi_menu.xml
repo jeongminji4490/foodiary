@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navi_todayBtn"
-        android:icon="@drawable/diet"
+        android:icon="@drawable/ic_food"
         android:title="오늘식단"/>
 
     <item
         android:id="@+id/navi_allBtn"
-        android:icon="@drawable/recipes"
+        android:icon="@drawable/ic_list_foreground"
         android:title="모아보기"/>
 
 </menu>

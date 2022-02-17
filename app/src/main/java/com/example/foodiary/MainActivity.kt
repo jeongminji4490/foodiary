@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.selects.select
+import nl.joery.animatedbottombar.AnimatedBottomBar
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -22,8 +24,11 @@ class MainActivity : AppCompatActivity() {
     //by lazy : 각 변수가 처음 사용되는 시점에서 지연 초기화
     private val TodayDietFragment by lazy { TodayDiet() }
     private val EmptyFragment by lazy { EmptyPage() }
-    private val naviView: BottomNavigationView by lazy {
-       findViewById(R.id.main_underbar)
+//    private val naviView: BottomNavigationView by lazy {
+//       findViewById(R.id.main_underbar)
+//    }
+    private val bottomBar: AnimatedBottomBar by lazy {
+        findViewById(R.id.bottom_bar)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +36,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val foodService=FoodClient.foodService
-        initNavigationBar()
+        //initNavigationBar()
+
+        runBottomBar()
+
 
 //        foodService.getFoodName("af2bd97db6b846529d0e","I2790","json","1","1")
 //            .enqueue(object: Callback<FoodList>{
@@ -57,26 +65,25 @@ class MainActivity : AppCompatActivity() {
 //            })
     }
 
-    private fun initNavigationBar(){
-        naviView.itemIconTintList=null
-        naviView.run {
-            setOnItemSelectedListener {
-                when(it.itemId){
-                    R.id.navi_todayBtn->{
-                        changeFragment(TodayDietFragment)
-                    }
-                    R.id.navi_allBtn->{
-                        changeFragment(EmptyFragment)
-                    }
+    private fun runBottomBar(){
+        
+        bottomBar.onTabSelected={
+            when(it.id){
+                R.id.navi_todayBtn->{
+                    changeFragment(TodayDietFragment)
                 }
-                true
+                R.id.navi_allBtn->{
+                    changeFragment(EmptyFragment)
+                }
             }
-            selectedItemId=R.id.navi_todayBtn //프래그먼트 초기화면 셋팅
+        }
+        bottomBar.onTabReselected={
+            Log.d("bottom_bar", "Reselected tab: " + it.title)
         }
     }
 
+
     private fun changeFragment(fragment: Fragment){
-        Log.e(TAG,"교체")
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frameLayout,fragment)
