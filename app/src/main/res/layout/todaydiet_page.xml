@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/date_leftBtn"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_margin="17sp"
+        android:src="@drawable/spoonfork"
+        android:scaleType="fitCenter"
+        android:background="#00ff0000"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/todayDateText"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/todayDateText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="25sp"
+        android:gravity="center"
+        android:text="2022/00/00"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toStartOf="@id/date_rightBtn"
+        app:layout_constraintStart_toEndOf="@id/date_leftBtn"
+        app:layout_constraintTop_toTopOf="@id/rectangleImg"
+        app:layout_constraintBottom_toBottomOf="@id/rectangleImg"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/date_rightBtn"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_margin="17sp"
+        app:layout_constraintStart_toEndOf="@id/todayDateText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/spoonfork"
+        android:scaleType="fitCenter"
+        android:background="#00ff0000"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/rectangleImg"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15sp"
+        app:layout_constraintStart_toEndOf="@id/date_leftBtn"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/date_rightBtn"
+        android:src="@drawable/rectangle"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/morning_text"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_margin="20sp"
+        android:background="#FACA84"
+        android:gravity="center"
+        android:text="아침"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rectangleImg"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/morningdietAddBtn"
+        android:layout_width="70dp"
+        android:layout_height="37dp"
+        android:layout_margin="10dp"
+        android:text="추가"
+        android:textColor="#FACA84"
+        app:layout_constraintTop_toBottomOf="@id/morning_text"
+        app:layout_constraintEnd_toEndOf="@id/morning_text"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
