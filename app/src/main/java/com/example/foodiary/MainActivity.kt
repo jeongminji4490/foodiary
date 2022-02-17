@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.GsonBuilder
 import kotlinx.coroutines.selects.select
@@ -66,7 +67,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun runBottomBar(){
-        
+        bottomBar.selectTabAt(0)
+        changeFragment(TodayDietFragment)
         bottomBar.onTabSelected={
             when(it.id){
                 R.id.navi_todayBtn->{
@@ -87,7 +89,18 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frameLayout,fragment)
+            .addToBackStack(null)
             .commit()
+    }
+
+    override fun onBackPressed() {
+        var count=supportFragmentManager.backStackEntryCount
+        if (count==0){
+            super.onBackPressed()
+        }else{
+            //supportFragmentManager.popBackStack()
+            finish()
+        }
     }
 
     companion object{
