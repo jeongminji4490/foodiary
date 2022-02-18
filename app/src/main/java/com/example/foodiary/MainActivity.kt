@@ -25,9 +25,6 @@ class MainActivity : AppCompatActivity() {
     //by lazy : 각 변수가 처음 사용되는 시점에서 지연 초기화
     private val TodayDietFragment by lazy { TodayDiet() }
     private val EmptyFragment by lazy { EmptyPage() }
-//    private val naviView: BottomNavigationView by lazy {
-//       findViewById(R.id.main_underbar)
-//    }
     private val bottomBar: AnimatedBottomBar by lazy {
         findViewById(R.id.bottom_bar)
     }
@@ -37,7 +34,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val foodService=FoodClient.foodService
-        //initNavigationBar()
 
         runBottomBar()
 
