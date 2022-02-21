@@ -3,13 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/drawable/ic_down_background.xml" value="0.18" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/drawable/ic_down_foreground.xml" value="0.18" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/drawable/ic_launcher_background.xml" value="0.181" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.181" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/drawable/rectangle.xml" value="0.181" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/drawable/spinner_background.xml" value="0.18" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/activity_main.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/add_diet_dialog.xml" value="0.23052536231884058" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/dinner_page.xml" value="0.23233695652173914" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/empty_page.xml" value="0.23233695652173914" />
+        <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/food_item.xml" value="0.23052536231884058" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/lunch_page.xml" value="0.23233695652173914" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/morning_page.xml" value="0.23233695652173914" />
         <entry key="..\:/Users/hamin/AndroidStudioProjects/Foodiary/app/src/main/res/layout/todaydiet_page.xml" value="0.23233695652173914" />
