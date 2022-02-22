@@ -2,11 +2,14 @@ package com.example.foodiary
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 
 class MorningDietPage : Fragment() {
 
@@ -25,6 +28,7 @@ class MorningDietPage : Fragment() {
 
         addBtn.setOnClickListener(View.OnClickListener {
             val dialog=AddDialog(context as Activity)
+            dialog.lifecycleOwner=this.viewLifecycleOwner
             dialog.showDialog()
 //            MotionToast.createColorToast(
 //                context as Activity,

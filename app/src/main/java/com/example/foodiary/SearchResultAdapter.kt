@@ -7,7 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class SearchResultAdapter(val context: Context, val list: ArrayList<FoodItemInList>) : RecyclerView.Adapter<SearchResultAdapter.Holder>() {
+class SearchResultAdapter(val context: Context) : RecyclerView.Adapter<SearchResultAdapter.Holder>() {
+    var list=ArrayList<FoodItemInList>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view= LayoutInflater.from(context).inflate(R.layout.food_item, parent, false)
@@ -23,8 +24,17 @@ class SearchResultAdapter(val context: Context, val list: ArrayList<FoodItemInLi
         return list.size
     }
 
-    class Holder(val view: View) : RecyclerView.ViewHolder(view){
+    fun addAll(item: ArrayList<FoodItemInList>){
+        list.addAll(item)
+    }
+
+    inner class Holder(val view: View) : RecyclerView.ViewHolder(view){
         val name: TextView=view.findViewById(R.id.food_name)
         val calorie: TextView=view.findViewById(R.id.food_calorie)
+    }
+
+    fun setData(newdata:ArrayList<FoodItemInList>){
+        list=newdata
+        notifyDataSetChanged() //이거 꼭 해야되냐
     }
 }

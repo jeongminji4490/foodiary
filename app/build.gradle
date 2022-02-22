@@ -47,4 +47,6 @@ dependencies {
     implementation 'nl.joery.animatedbottombar:library:1.1.0'
 
     implementation 'com.github.Spikeysanju:MotionToast:1.4'
+
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
 }
