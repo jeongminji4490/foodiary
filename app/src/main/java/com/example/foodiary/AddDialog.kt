@@ -9,9 +9,7 @@ import android.graphics.drawable.ClipDrawable.VERTICAL
 import android.icu.lang.UCharacter
 import android.util.Log
 import android.view.*
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LifecycleObserver
@@ -34,8 +32,10 @@ class AddDialog(private var context: Context){
     private val dialog=Dialog(context)
     private var datas= arrayListOf<FoodItemInList>()
     private val adapter=SearchResultAdapter(context)
+    private val selectedAdapter=SearchResultAdapter(context)
     private val viewModel=foodViewModel()
     lateinit var lifecycleOwner: LifecycleOwner
+    private lateinit var calorie: String
 
     @SuppressLint("NotifyDataSetChanged")
     fun showDialog(){
@@ -53,7 +53,6 @@ class AddDialog(private var context: Context){
                                 val name=it.list.food[i].foodName
                                 val kcal=it.list.food[i].kcal
                                 Log.e(TAG,name+","+kcal)
-                                //datas.add(FoodItemInList(name,kcal))
                                 viewModel.addItem(FoodItemInList(name, kcal))
                             }
                         }
@@ -76,20 +75,16 @@ class AddDialog(private var context: Context){
         val cancelBtn: Button=dialog.findViewById(R.id.dialogCancelBtn)
         val spinner: Spinner=dialog.findViewById(R.id.category_spinner)
         val recyclerView: RecyclerView=dialog.findViewById(R.id.search_recyclerView)
+        val sRecyclerView: RecyclerView=dialog.findViewById(R.id.searchSelect_recyclerView)
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
+        val directAddBtn: Button=dialog.findViewById(R.id.directInput_Btn)
+        val name_edit: EditText=dialog.findViewById(R.id.directName_Edit)
+        val calorie_edit: EditText=dialog.findViewById(R.id.directCalorie_Edit)
         recyclerView.addItemDecoration(decoration)
 //        adapter.list=datas
 //        adapter.addAll(datas)
 
-        viewModel.liveData.observe(lifecycleOwner, Observer {
-            adapter.setData(it)
-            recyclerView.adapter=adapter
-            recyclerView.layoutManager=LinearLayoutManager(context)
-        })
-
-        //adapter.notifyDataSetChanged()
-
-        //spinner
+        //category spinner
         ArrayAdapter.createFromResource(
             context,
             R.array.category,
@@ -99,9 +94,40 @@ class AddDialog(private var context: Context){
             spinner.adapter=arrayAdapter
         }
 
+        //UI 실시간 업데이트
+        viewModel.liveData.observe(lifecycleOwner, Observer {
+            adapter.setData(it)
+            recyclerView.adapter=adapter
+            recyclerView.layoutManager=LinearLayoutManager(context)
+        })
+
+        //recyclerview item click event
+        adapter.itemClick=object : SearchResultAdapter.ItemClick{
+            override fun onClick(view: View, position: Int, list: ArrayList<FoodItemInList>) {
+                //Toast.makeText(context,list[position].name,Toast.LENGTH_SHORT).show()
+                val name=list[position].name
+                val calorie=list[position].calorie
+                selectedAdapter.add(FoodItemInList(name, calorie))
+                Log.e(TAG,name+calorie)
+                sRecyclerView.adapter=selectedAdapter
+                sRecyclerView.layoutManager=LinearLayoutManager(context)
+            }
+        }
+
+        //직접 입력한 데이터 추가
+        directAddBtn.setOnClickListener(View.OnClickListener {
+            if (name_edit.text.toString().isEmpty()) { //식품명이 비어있다면(칼로리는 안적어도됨!){
+                Toast.makeText(context,"식품명을 적어주세요",Toast.LENGTH_SHORT).show()
+            }else{
+                selectedAdapter.add(FoodItemInList(name_edit.text.toString(),calorie_edit.text.toString()))
+                sRecyclerView.adapter=selectedAdapter
+                sRecyclerView.layoutManager=LinearLayoutManager(context)
+            }
+        })
+
         dialog.show()
 
-        //save button click event
+        //save & cancel button click event
         saveBtn.setOnClickListener(View.OnClickListener {
             MotionToast.createColorToast(
                 context as Activity,
