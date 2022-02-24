@@ -32,6 +32,7 @@ class MorningDietPage : Fragment() {
             val dialog=AddDialog(context as Activity)
             dialog.lifecycleOwner=this.viewLifecycleOwner
             dialog.timeText=morningText.text.toString()
+
             dialog.showDialog()
 //            MotionToast.createColorToast(
 //                context as Activity,

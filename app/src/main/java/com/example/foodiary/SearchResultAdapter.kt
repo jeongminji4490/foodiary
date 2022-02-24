@@ -35,6 +35,14 @@ class SearchResultAdapter(val context: Context) : RecyclerView.Adapter<SearchRes
         return list.size
     }
 
+    fun getName(pos: Int): String{
+        return list[pos].name
+    }
+
+    fun getCalorie(pos: Int): String{
+        return list[pos].calorie
+    }
+
     fun add(item: FoodItemInList){
         list.add(item)
     }
