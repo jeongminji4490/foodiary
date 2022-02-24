@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -25,10 +26,12 @@ class MorningDietPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val addBtn: Button=view.findViewById(R.id.m_add_btn)
+        val morningText: TextView=view.findViewById(R.id.morning_text)
 
         addBtn.setOnClickListener(View.OnClickListener {
             val dialog=AddDialog(context as Activity)
             dialog.lifecycleOwner=this.viewLifecycleOwner
+            dialog.timeText=morningText.text.toString()
             dialog.showDialog()
 //            MotionToast.createColorToast(
 //                context as Activity,

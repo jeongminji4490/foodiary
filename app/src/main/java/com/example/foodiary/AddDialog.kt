@@ -35,11 +35,12 @@ class AddDialog(private var context: Context){
     private val selectedAdapter=SearchResultAdapter(context)
     private val viewModel=foodViewModel()
     lateinit var lifecycleOwner: LifecycleOwner
-    private lateinit var calorie: String
+    lateinit var timeText: String
 
-    @SuppressLint("NotifyDataSetChanged")
     fun showDialog(){
         val foodService=FoodClient.foodService
+        App.prefs.get("myDatePrefs")?.let { it1 -> Log.e(TAG, it1) }
+        Log.d(TAG,timeText)
 
         foodService.getFoodName("af2bd97db6b846529d0e","I2790","json")
             .enqueue(object: Callback<FoodList> {
@@ -52,7 +53,6 @@ class AddDialog(private var context: Context){
                             for (i: Int in 0..50){
                                 val name=it.list.food[i].foodName
                                 val kcal=it.list.food[i].kcal
-                                Log.e(TAG,name+","+kcal)
                                 viewModel.addItem(FoodItemInList(name, kcal))
                             }
                         }
@@ -128,6 +128,7 @@ class AddDialog(private var context: Context){
         dialog.show()
 
         //save & cancel button click event
+        //serial_num, 날짜, 식사시간, 카테고리, 음식이름, 칼로리 db에 저장
         saveBtn.setOnClickListener(View.OnClickListener {
             MotionToast.createColorToast(
                 context as Activity,

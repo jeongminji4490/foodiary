@@ -42,22 +42,23 @@ class TodayDiet : Fragment() {
         currentDate() //먼저 오늘 날짜로 초기화
         selectedDate=currentDate.dateToString("yyyy-MM-dd")
         selectedDateText.text=selectedDate
+        App.prefs.set("myDatePrefs",selectedDate)
 
         //이전 날짜로
         leftBtn.setOnClickListener(View.OnClickListener {
             calendar.add(Calendar.DATE,-1)
-            Log.d("tag", calendar.time.toString())
             currentDate=calendar.time
             selectedDate=currentDate.dateToString("yyyy-MM-dd")
             selectedDateText.text=selectedDate
+            App.prefs.set("myDatePrefs",selectedDate)
         })
         //다음 날짜로
         rightBtn.setOnClickListener(View.OnClickListener {
             calendar.add(Calendar.DATE,1)
-            Log.d("tag", calendar.time.toString())
             currentDate=calendar.time
             selectedDate=currentDate.dateToString("yyyy-MM-dd")
             selectedDateText.text=selectedDate
+            App.prefs.set("myDatePrefs",selectedDate)
         })
 
     }
@@ -68,11 +69,8 @@ class TodayDiet : Fragment() {
     }
 
     fun currentDate(): Unit { //오늘날짜로 calendar 셋팅
-        //currentDate=Calendar.getInstance().time
         currentDate=calendar.time
-        Log.d("tag", currentDate.toString())
         calendar.time=currentDate
-        Log.d("tag", calendar.time.toString())
     }
 
 }
