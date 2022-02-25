@@ -42,12 +42,31 @@ class AddDialog(private var context: Context){
 
     fun showDialog(){
         //room db는 메인쓰레드에서 생성 불가
+        dialog.setContentView(R.layout.add_diet_dialog)
+        dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+            WindowManager.LayoutParams.WRAP_CONTENT)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.setCancelable(true)
+
         dViewModel=ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application).create(diaryViewModel::class.java)
         val foodService=FoodClient.foodService
         App.prefs.get("myDatePrefs")?.let { it1 ->
             selectedDate=it1
         }
         Log.d(TAG,timeText)
+
+        //views
+        val loadingText: TextView=dialog.findViewById(R.id.loading_text)
+        val saveBtn: Button=dialog.findViewById(R.id.dialogSaveBtn)
+        val cancelBtn: Button=dialog.findViewById(R.id.dialogCancelBtn)
+        val spinner: Spinner=dialog.findViewById(R.id.category_spinner)
+        val recyclerView: RecyclerView=dialog.findViewById(R.id.search_recyclerView)
+        val sRecyclerView: RecyclerView=dialog.findViewById(R.id.searchSelect_recyclerView)
+        val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
+        val directAddBtn: Button=dialog.findViewById(R.id.directInput_Btn)
+        val name_edit: EditText=dialog.findViewById(R.id.directName_Edit)
+        val calorie_edit: EditText=dialog.findViewById(R.id.directCalorie_Edit)
+        val serialNum: Int=0
 
         foodService.getFoodName("af2bd97db6b846529d0e","I2790","json")
             .enqueue(object: Callback<FoodList> {
@@ -57,6 +76,7 @@ class AddDialog(private var context: Context){
                         return
                     }else{
                         response.body()?.let {
+                            loadingText.visibility=View.GONE
                             for (i: Int in 0..50){
                                 val name=it.list.food[i].foodName
                                 val kcal=it.list.food[i].kcal
@@ -71,23 +91,6 @@ class AddDialog(private var context: Context){
                 }
 
             })
-
-        dialog.setContentView(R.layout.add_diet_dialog)
-        dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT)
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.setCancelable(true)
-        //views
-        val saveBtn: Button=dialog.findViewById(R.id.dialogSaveBtn)
-        val cancelBtn: Button=dialog.findViewById(R.id.dialogCancelBtn)
-        val spinner: Spinner=dialog.findViewById(R.id.category_spinner)
-        val recyclerView: RecyclerView=dialog.findViewById(R.id.search_recyclerView)
-        val sRecyclerView: RecyclerView=dialog.findViewById(R.id.searchSelect_recyclerView)
-        val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
-        val directAddBtn: Button=dialog.findViewById(R.id.directInput_Btn)
-        val name_edit: EditText=dialog.findViewById(R.id.directName_Edit)
-        val calorie_edit: EditText=dialog.findViewById(R.id.directCalorie_Edit)
-        val serialNum: Int=0
         recyclerView.addItemDecoration(decoration)
 //        adapter.list=datas
 //        adapter.addAll(datas)
@@ -137,6 +140,7 @@ class AddDialog(private var context: Context){
 
         //save & cancel button click event
         //serial_num, 날짜, 식사시간, 카테고리, 음식이름, 칼로리 db에 저장
+        //일지 제대로 저장되는지 확인하고(ok), 메인페이지에서 리스트업하기!
         saveBtn.setOnClickListener(View.OnClickListener {
             //sRecyclerView에 있는거 다 저장, 즉 selectedAdapter의 모든 아이템들을 저장해야함
             for (i: Int in 0..selectedAdapter.itemCount){
@@ -144,20 +148,20 @@ class AddDialog(private var context: Context){
                     val name=selectedAdapter.getName(i)
                     val calorie=selectedAdapter.getCalorie(i)
                     insert(morningDiary(serialNum, selectedDate,spinner.selectedItem.toString(),name,calorie))
+                    MotionToast.createColorToast(
+                        context as Activity,
+                        "완료",
+                        "일기 저장",
+                        MotionToastStyle.SUCCESS,
+                        MotionToast.GRAVITY_BOTTOM,
+                        MotionToast.LONG_DURATION,
+                        ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
+                    )
+                    dialog.dismiss()
                 }catch (e: IndexOutOfBoundsException){
-                    Log.e(TAG,"IndexOutOfBouncsException")
+                    Log.e(TAG,"IndexOutOfBouncsException") //이부분 오류발생, 근데 저장은 잘 됨...
                 }
             }
-            MotionToast.createColorToast(
-                context as Activity,
-                "완료",
-                "일기 저장",
-                MotionToastStyle.SUCCESS,
-                MotionToast.GRAVITY_BOTTOM,
-                MotionToast.LONG_DURATION,
-                ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
-            )
-            dialog.dismiss()
         })
         cancelBtn.setOnClickListener(View.OnClickListener {
             dialog.dismiss()

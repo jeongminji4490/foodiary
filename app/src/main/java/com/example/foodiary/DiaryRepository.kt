@@ -1,6 +1,7 @@
 package com.example.foodiary
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 
 class DiaryRepository(application: Application) {
     private val db=DiaryDatabase.getInstance(application)!! //메인쓰레드에서 접근 불가
@@ -8,7 +9,7 @@ class DiaryRepository(application: Application) {
 
     //private val diaries: List<Diary> = dao.getAll()
 
-    suspend fun getMorningAll(): List<morningDiary>{
+    suspend fun getMorningAll(): MutableLiveData<List<morningDiary>>{
         return dao.getMoringAll()
     }
 

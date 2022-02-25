@@ -1,5 +1,6 @@
 package com.example.foodiary
 
+import androidx.lifecycle.MutableLiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,7 +10,7 @@ import androidx.room.Query
 interface DiaryDao {
 
     @Query("Select * From morning")
-    suspend fun getMoringAll(): List<morningDiary>
+    suspend fun getMoringAll(): MutableLiveData<List<morningDiary>>
 
     @Query("Select * From lunch")
     suspend fun getLunchAll(): List<lunchDiary>

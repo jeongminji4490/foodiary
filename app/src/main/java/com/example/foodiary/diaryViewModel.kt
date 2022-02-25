@@ -2,12 +2,13 @@ package com.example.foodiary
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 
 class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository= DiaryRepository(application)
     //private val diaries=repository.getAll()
 
-    suspend fun getMorningAll(): List<morningDiary>{
+    suspend fun getMorningAll(): MutableLiveData<List<morningDiary>>{
         return repository.getMorningAll()
     }
 
