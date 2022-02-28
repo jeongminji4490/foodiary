@@ -2,22 +2,27 @@ package com.example.foodiary
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository= DiaryRepository(application)
     //private val diaries=repository.getAll()
 
-    suspend fun getMorningAll(): MutableLiveData<List<morningDiary>>{
+    fun getMorningAll(): LiveData<List<morningDiary>> {
         return repository.getMorningAll()
     }
 
-    suspend fun getLunchAll(): List<lunchDiary>{
+    fun getLunchAll(): List<lunchDiary>{
         return repository.getLunchAll()
     }
 
-    suspend fun getDinnerAll(): List<dinnerDiary>{
+    fun getDinnerAll(): List<dinnerDiary>{
         return repository.getDinnerAll()
+    }
+
+    fun getMorningCount(): Int{
+        return repository.getMorningCount()
     }
 
     suspend fun morningInsert(diary: morningDiary){

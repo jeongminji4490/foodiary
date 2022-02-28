@@ -1,22 +1,25 @@
 package com.example.foodiary
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
 interface DiaryDao {
 
+    //Room이 이미 MutableLiveData를 반환하는 특정 @Query에 대한 백그라운드 스레드를 사용하기 때문에 MutableLiveData를 리턴하는 메소드에는 따로 suspend를 추가하지 않아도 됨
     @Query("Select * From morning")
-    suspend fun getMoringAll(): MutableLiveData<List<morningDiary>>
+    fun getMoringAll(): LiveData<List<morningDiary>>
 
     @Query("Select * From lunch")
-    suspend fun getLunchAll(): List<lunchDiary>
+    fun getLunchAll(): List<lunchDiary>
 
     @Query("Select * From dinner")
-    suspend fun getDinnerAll(): List<dinnerDiary>
+    fun getDinnerAll(): List<dinnerDiary>
+
+    @Query("SELECT COUNT(serialNum) FROM morning")
+    fun getMorningCount(): Int
 
     @Insert
     suspend fun morningInsert(d: morningDiary)

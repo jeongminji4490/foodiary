@@ -1,6 +1,7 @@
 package com.example.foodiary
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 class DiaryRepository(application: Application) {
@@ -9,16 +10,20 @@ class DiaryRepository(application: Application) {
 
     //private val diaries: List<Diary> = dao.getAll()
 
-    suspend fun getMorningAll(): MutableLiveData<List<morningDiary>>{
+    fun getMorningAll(): LiveData<List<morningDiary>> {
         return dao.getMoringAll()
     }
 
-    suspend fun getLunchAll(): List<lunchDiary>{
+    fun getLunchAll(): List<lunchDiary>{
         return dao.getLunchAll()
     }
 
-    suspend fun getDinnerAll(): List<dinnerDiary>{
+    fun getDinnerAll(): List<dinnerDiary>{
         return dao.getDinnerAll()
+    }
+
+    fun getMorningCount(): Int{
+        return dao.getMorningCount()
     }
 
     suspend fun morningInsert(diary: morningDiary){
