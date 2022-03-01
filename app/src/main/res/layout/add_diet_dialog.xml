@@ -177,26 +177,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints" />
 
-    <Button
+    <ImageButton
         android:id="@+id/dialogCancelBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="취소"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/cancel"
+        android:scaleType="fitCenter"
+        android:background="#00ff0000"
         android:layout_margin="5dp"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@id/dialogSaveBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchSelect_recyclerView"
         tools:ignore="MissingConstraints" />
 
 
-    <Button
+    <ImageButton
         android:id="@+id/dialogSaveBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="저장"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_margin="5dp"
-        android:textColor="@color/black"
+        android:src="@drawable/check"
+        android:background="#00ff0000"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dialogCancelBtn"
         app:layout_constraintTop_toBottomOf="@id/searchSelect_recyclerView"

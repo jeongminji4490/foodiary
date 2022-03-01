@@ -37,4 +37,8 @@ class DiaryRepository(application: Application) {
     suspend fun dinnerInsert(diary: dinnerDiary){
         dao.dinnerInsert(diary)
     }
+
+    suspend fun morningDelete(serialNum: Int){
+        dao.deleteMorning(serialNum)
+    }
 }

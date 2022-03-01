@@ -36,4 +36,8 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
     suspend fun dinnerInsert(diary: dinnerDiary){
         repository.dinnerInsert(diary)
     }
+
+    suspend fun morningDelete(serialNum: Int){
+        repository.morningDelete(serialNum)
+    }
 }

@@ -1,31 +1,29 @@
 package com.example.foodiary
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.Dialog
 import android.content.Context
-import android.content.ContextWrapper
-import android.graphics.drawable.ClipDrawable.VERTICAL
-import android.icu.lang.UCharacter
+import android.content.Intent
 import android.util.Log
-import android.view.*
+import android.view.View
+import android.view.WindowManager
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
-import java.lang.IllegalStateException
-import java.lang.IndexOutOfBoundsException
-import java.util.zip.Inflater
 
 
 class AddDialog(private var context: Context){
@@ -57,8 +55,8 @@ class AddDialog(private var context: Context){
 
         //views
         val loadingText: TextView=dialog.findViewById(R.id.loading_text)
-        val saveBtn: Button=dialog.findViewById(R.id.dialogSaveBtn)
-        val cancelBtn: Button=dialog.findViewById(R.id.dialogCancelBtn)
+        val saveBtn: ImageButton=dialog.findViewById(R.id.dialogSaveBtn)
+        val cancelBtn: ImageButton=dialog.findViewById(R.id.dialogCancelBtn)
         val spinner: Spinner=dialog.findViewById(R.id.category_spinner)
         val recyclerView: RecyclerView=dialog.findViewById(R.id.search_recyclerView)
         val sRecyclerView: RecyclerView=dialog.findViewById(R.id.searchSelect_recyclerView)
@@ -148,7 +146,7 @@ class AddDialog(private var context: Context){
                     val name=selectedAdapter.getName(i)
                     val calorie=selectedAdapter.getCalorie(i)
                     insert(morningDiary(serialNum, selectedDate,spinner.selectedItem.toString(),name,calorie))
-                    MotionToast.createColorToast(
+                    MotionToast.darkColorToast(
                         context as Activity,
                         "완료",
                         "일기 저장",
@@ -157,7 +155,10 @@ class AddDialog(private var context: Context){
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
                     )
+                    val intent= Intent(context,MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     dialog.dismiss()
+                    context.startActivity(intent)
                 }catch (e: IndexOutOfBoundsException){
                     Log.e(TAG,"IndexOutOfBouncsException") //이부분 오류발생, 근데 저장은 잘 됨...
                 }

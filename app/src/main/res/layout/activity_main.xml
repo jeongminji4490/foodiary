@@ -67,6 +67,7 @@
         app:abb_tabs="@menu/navi_menu"
         app:abb_iconSize="50sp"
         app:abb_tabColorSelected="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/frameLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

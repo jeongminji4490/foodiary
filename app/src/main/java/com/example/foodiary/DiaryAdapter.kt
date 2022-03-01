@@ -9,6 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 class DiaryAdapter(val context: Context) : RecyclerView.Adapter<DiaryAdapter.Holder>() {
     var list=ArrayList<DiaryItemInList>()
+    interface ItemClick{
+        fun onClick(view: View, position: Int, list: ArrayList<DiaryItemInList>)
+    }
+    var itemClick: ItemClick?=null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view= LayoutInflater.from(context).inflate(R.layout.mainpage_item, parent, false)
         return Holder(view)
@@ -18,6 +23,12 @@ class DiaryAdapter(val context: Context) : RecyclerView.Adapter<DiaryAdapter.Hol
         holder.category.text=list[position].category
         holder.name.text=list[position].name
         holder.calorie.text=list[position].calorie
+
+        if (itemClick!=null){
+            holder.view.setOnClickListener{ v->
+                itemClick?.onClick(v, position, list)
+            }
+        }
     }
 
     override fun getItemCount(): Int {

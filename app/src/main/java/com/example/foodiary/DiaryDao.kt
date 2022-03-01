@@ -2,6 +2,7 @@ package com.example.foodiary
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 
@@ -30,5 +31,7 @@ interface DiaryDao {
     @Insert
     suspend fun dinnerInsert(d: dinnerDiary)
 
+    @Query("DELETE FROM morning WHERE serialNum = :serialNum")
+    suspend fun deleteMorning(serialNum: Int)
     //삭제는 나중에..
 }
