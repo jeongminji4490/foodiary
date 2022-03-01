@@ -11,15 +11,16 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
+import org.w3c.dom.Text
 import kotlin.properties.Delegates
 
 class MorningDietPage : Fragment() {
     private lateinit var diaryAdapter: DiaryAdapter
     private lateinit var dViewModel: diaryViewModel
     private val scope= CoroutineScope(Dispatchers.IO)
-    //private lateinit var num: Deferred<Int>
     private var num:Int=0
     private lateinit var morningList: LiveData<List<morningDiary>>
 
@@ -45,13 +46,24 @@ class MorningDietPage : Fragment() {
         //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
         //그럼 num을 어떻게 갖고오지..?;
-        scope.launch {
-            num=dViewModel.getMorningCount()
-            Log.e("in rowCount", num.toString())
-        }
+        //Observe를 ViewModel에서 호출??
+//        scope.launch {
+//            num=dViewModel.getMorningCount()
+//            Log.e("in rowCount", num.toString())
+//        }
 
-        
-
+        dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
+            it?.let {
+                for (i: Int in it.indices){
+                    val category=it[i].category
+                    val name=it[i].food_name
+                    val calorie=it[i].food_calorie
+                    diaryAdapter.add(DiaryItemInList(category,name,calorie))
+                    recyclerView.adapter=diaryAdapter
+                    recyclerView.layoutManager=LinearLayoutManager(context)
+                }
+            }
+        })
 //        for (i:Int in 0..num){
 //            dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
 //                Log.e(TAG,it[i].food_name)
@@ -70,10 +82,6 @@ class MorningDietPage : Fragment() {
 //        num=dViewModel.getMorningCount()
 //        Log.e("in rowCount", num.toString())
 //    }
-
-    fun selectAll()=scope.async {
-        dViewModel.getMorningAll()
-    }
 
     companion object{
         private const val TAG="MorningDietPage"

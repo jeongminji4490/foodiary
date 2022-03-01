@@ -24,6 +24,10 @@ class DiaryAdapter(val context: Context) : RecyclerView.Adapter<DiaryAdapter.Hol
         return list.size
     }
 
+    fun add(d: DiaryItemInList){
+        list.add(d)
+    }
+
     inner class Holder(val view: View): RecyclerView.ViewHolder(view){
         val category: TextView= view.findViewById(R.id.main_category)
         val name: TextView =view.findViewById(R.id.main_food_name)
