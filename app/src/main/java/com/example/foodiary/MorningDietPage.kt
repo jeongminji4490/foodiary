@@ -63,14 +63,24 @@ class MorningDietPage : Fragment() {
 //        }
 
         //diaryAdapter.list.clear()
+        //추가) 날짜별로, 식사시간별로 리스트업하기
         dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
             it?.let {
                 for (i: Int in it.indices){
                     val serialNum=it[i].serialNum
                     val category=it[i].category
                     val name=it[i].food_name
+
                     val calorie=it[i].food_calorie
-                    diaryAdapter.add(DiaryItemInList(serialNum,category,name,calorie))
+                    if (category == "식사"){
+                        val item=DiaryItemInList(serialNum,category,name,calorie,0)
+                        diaryAdapter.add(item)
+                        Log.e("InsertViewType(식사)", item.viewType.toString())
+                    }else{
+                        val item=DiaryItemInList(serialNum,category,name,calorie,1)
+                        diaryAdapter.add(item)
+                        Log.e("InsertViewType(간식)", item.viewType.toString())
+                    }
                     recyclerView.adapter=diaryAdapter
                     recyclerView.layoutManager=LinearLayoutManager(context)
                 }
@@ -84,7 +94,7 @@ class MorningDietPage : Fragment() {
                 deleteDialog.show()
                 //아이템 삭제(serial num으로 삭제)
                 deleteOkBtn.setOnClickListener(View.OnClickListener {
-                    Log.e(TAG, list[position].serialNum.toString())
+                    //Log.e(TAG, list[position].serialNum.toString())
                     delete(list[position].serialNum)
                     deleteDialog.dismiss()
                     diaryAdapter.list.clear()
