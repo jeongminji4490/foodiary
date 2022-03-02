@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.foodiary.databinding.AddDietDialogBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +26,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
-
 
 class AddDialog(private var context: Context){
     private val dialog=Dialog(context)
@@ -37,10 +38,12 @@ class AddDialog(private var context: Context){
     lateinit var timeText: String
     lateinit var selectedDate: String
     private lateinit var dViewModel: diaryViewModel
+    private lateinit var dialogBinding: AddDietDialogBinding
 
     fun showDialog(){
         //room db는 메인쓰레드에서 생성 불가
-        dialog.setContentView(R.layout.add_diet_dialog)
+        dialogBinding= AddDietDialogBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
         dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT)
         dialog.setCanceledOnTouchOutside(true)
@@ -53,17 +56,7 @@ class AddDialog(private var context: Context){
         }
         Log.d(TAG,timeText)
 
-        //views
-        val loadingText: TextView=dialog.findViewById(R.id.loading_text)
-        val saveBtn: ImageButton=dialog.findViewById(R.id.dialogSaveBtn)
-        val cancelBtn: ImageButton=dialog.findViewById(R.id.dialogCancelBtn)
-        val spinner: Spinner=dialog.findViewById(R.id.category_spinner)
-        val recyclerView: RecyclerView=dialog.findViewById(R.id.search_recyclerView)
-        val sRecyclerView: RecyclerView=dialog.findViewById(R.id.searchSelect_recyclerView)
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
-        val directAddBtn: Button=dialog.findViewById(R.id.directInput_Btn)
-        val name_edit: EditText=dialog.findViewById(R.id.directName_Edit)
-        val calorie_edit: EditText=dialog.findViewById(R.id.directCalorie_Edit)
         val serialNum: Int=0
 
         foodService.getFoodName("af2bd97db6b846529d0e","I2790","json")
@@ -74,7 +67,7 @@ class AddDialog(private var context: Context){
                         return
                     }else{
                         response.body()?.let {
-                            loadingText.visibility=View.GONE
+                            dialogBinding.loadingText.visibility=View.GONE
                             for (i: Int in 0..50){
                                 val name=it.list.food[i].foodName
                                 val kcal=it.list.food[i].kcal
@@ -89,7 +82,7 @@ class AddDialog(private var context: Context){
                 }
 
             })
-        recyclerView.addItemDecoration(decoration)
+        dialogBinding.searchRecyclerView.addItemDecoration(decoration)
 //        adapter.list=datas
 //        adapter.addAll(datas)
 
@@ -100,14 +93,14 @@ class AddDialog(private var context: Context){
             android.R.layout.simple_spinner_dropdown_item
         ).also {arrayAdapter ->
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner.adapter=arrayAdapter
+            dialogBinding.categorySpinner.adapter=arrayAdapter
         }
 
         //UI 실시간 업데이트
         viewModel.liveData.observe(lifecycleOwner, Observer {
             adapter.setData(it)
-            recyclerView.adapter=adapter
-            recyclerView.layoutManager=LinearLayoutManager(context)
+            dialogBinding.searchRecyclerView.adapter=adapter
+            dialogBinding.searchRecyclerView.layoutManager=LinearLayoutManager(context)
         })
 
         //recyclerview item click event
@@ -118,19 +111,19 @@ class AddDialog(private var context: Context){
                 val calorie=list[position].calorie
                 selectedAdapter.add(FoodItemInList(name, calorie))
                 Log.e(TAG,name+calorie)
-                sRecyclerView.adapter=selectedAdapter
-                sRecyclerView.layoutManager=LinearLayoutManager(context)
+                dialogBinding.searchSelectRecyclerView.adapter=selectedAdapter
+                dialogBinding.searchSelectRecyclerView.layoutManager=LinearLayoutManager(context)
             }
         }
 
         //직접 입력한 데이터 추가
-        directAddBtn.setOnClickListener(View.OnClickListener {
-            if (name_edit.text.toString().isEmpty()) { //식품명이 비어있다면(칼로리는 안적어도됨!){
+        dialogBinding.directInputBtn.setOnClickListener(View.OnClickListener {
+            if (dialogBinding.directNameEdit.text.toString().isEmpty()) { //식품명이 비어있다면(칼로리는 안적어도됨!){
                 Toast.makeText(context,"식품명을 적어주세요",Toast.LENGTH_SHORT).show()
             }else{
-                selectedAdapter.add(FoodItemInList(name_edit.text.toString(),calorie_edit.text.toString()))
-                sRecyclerView.adapter=selectedAdapter
-                sRecyclerView.layoutManager=LinearLayoutManager(context)
+                selectedAdapter.add(FoodItemInList(dialogBinding.directNameEdit.text.toString(),dialogBinding.directCalorieEdit.text.toString()))
+                dialogBinding.searchSelectRecyclerView.adapter=selectedAdapter
+                dialogBinding.searchSelectRecyclerView.layoutManager=LinearLayoutManager(context)
             }
         })
 
@@ -139,13 +132,14 @@ class AddDialog(private var context: Context){
         //save & cancel button click event
         //serial_num, 날짜, 식사시간, 카테고리, 음식이름, 칼로리 db에 저장
         //일지 제대로 저장되는지 확인하고(ok), 메인페이지에서 리스트업하기!
-        saveBtn.setOnClickListener(View.OnClickListener {
+        dialogBinding.dialogSaveBtn.setOnClickListener(View.OnClickListener {
             //sRecyclerView에 있는거 다 저장, 즉 selectedAdapter의 모든 아이템들을 저장해야함
             for (i: Int in 0..selectedAdapter.itemCount){
                 try {
                     val name=selectedAdapter.getName(i)
                     val calorie=selectedAdapter.getCalorie(i)
-                    insert(morningDiary(serialNum, selectedDate,spinner.selectedItem.toString(),name,calorie))
+                    //아래 수정!!
+                    insert(morningDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
                     MotionToast.darkColorToast(
                         context as Activity,
                         "완료",
@@ -164,7 +158,7 @@ class AddDialog(private var context: Context){
                 }
             }
         })
-        cancelBtn.setOnClickListener(View.OnClickListener {
+        dialogBinding.dialogCancelBtn.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
         })
     }

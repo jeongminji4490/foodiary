@@ -14,10 +14,10 @@ interface DiaryDao {
     fun getMoringAll(): LiveData<List<morningDiary>>
 
     @Query("Select * From lunch")
-    fun getLunchAll(): List<lunchDiary>
+    fun getLunchAll(): LiveData<List<lunchDiary>>
 
     @Query("Select * From dinner")
-    fun getDinnerAll(): List<dinnerDiary>
+    fun getDinnerAll(): LiveData<List<dinnerDiary>>
 
     @Query("SELECT COUNT(serialNum) FROM morning")
     fun getMorningCount(): Int
@@ -33,5 +33,11 @@ interface DiaryDao {
 
     @Query("DELETE FROM morning WHERE serialNum = :serialNum")
     suspend fun deleteMorning(serialNum: Int)
-    //삭제는 나중에..
+
+    @Query("DELETE FROM lunch WHERE serialNum = :serialNum")
+    suspend fun deleteLunch(serialNum: Int)
+
+    @Query("DELETE FROM dinner WHERE serialNum = :serialNum")
+    suspend fun deleteDinner(serialNum: Int)
+
 }

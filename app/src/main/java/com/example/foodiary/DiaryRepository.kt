@@ -14,11 +14,11 @@ class DiaryRepository(application: Application) {
         return dao.getMoringAll()
     }
 
-    fun getLunchAll(): List<lunchDiary>{
+    fun getLunchAll(): LiveData<List<lunchDiary>>{
         return dao.getLunchAll()
     }
 
-    fun getDinnerAll(): List<dinnerDiary>{
+    fun getDinnerAll(): LiveData<List<dinnerDiary>>{
         return dao.getDinnerAll()
     }
 
@@ -41,4 +41,13 @@ class DiaryRepository(application: Application) {
     suspend fun morningDelete(serialNum: Int){
         dao.deleteMorning(serialNum)
     }
+
+    suspend fun lunchDelete(serialNum: Int){
+        dao.deleteLunch(serialNum)
+    }
+
+    suspend fun dinnerDelete(serialNum: Int){
+        dao.deleteDinner(serialNum)
+    }
+
 }

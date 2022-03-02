@@ -13,11 +13,11 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getMorningAll()
     }
 
-    fun getLunchAll(): List<lunchDiary>{
+    fun getLunchAll(): LiveData<List<lunchDiary>>{
         return repository.getLunchAll()
     }
 
-    fun getDinnerAll(): List<dinnerDiary>{
+    fun getDinnerAll(): LiveData<List<dinnerDiary>>{
         return repository.getDinnerAll()
     }
 
@@ -39,5 +39,13 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun morningDelete(serialNum: Int){
         repository.morningDelete(serialNum)
+    }
+
+    suspend fun lunchDelete(serialNum: Int){
+        repository.lunchDelete(serialNum)
+    }
+
+    suspend fun dinnerDelete(serialNum: Int){
+        repository.dinnerDelete(serialNum)
     }
 }
