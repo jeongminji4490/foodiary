@@ -45,10 +45,10 @@ class DiaryAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.Vie
             MEAL->{
                 Log.e("DiaryAdapter",getItemViewType(position).toString())
                 (holder as MealHolder).name.text=list[position].name
-                (holder as MealHolder).calorie.text=list[position].calorie
+                holder.calorie.text=list[position].calorie
 
                 if (itemClick!=null){
-                    (holder as MealHolder).view.setOnClickListener{ v->
+                    (holder).view.setOnClickListener{ v->
                         itemClick?.onClick(v, position, list)
                     }
                 }
@@ -56,10 +56,10 @@ class DiaryAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.Vie
             else->{
                 Log.e("DiaryAdapter",getItemViewType(position).toString())
                 (holder as SnackHolder).name.text=list[position].name
-                (holder as SnackHolder).calorie.text=list[position].calorie
+                (holder).calorie.text=list[position].calorie
 
                 if (itemClick!=null){
-                    (holder as SnackHolder).view.setOnClickListener{ v->
+                    (holder).view.setOnClickListener{ v->
                         itemClick?.onClick(v, position, list)
                     }
                 }

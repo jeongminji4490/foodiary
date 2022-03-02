@@ -1,5 +1,6 @@
 package com.example.foodiary
 
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,9 +13,11 @@ object FoodClient { //Singleton
         .writeTimeout(120, TimeUnit.SECONDS)
         .build()
 
+    var gson= GsonBuilder().setLenient().create()
+
     val retrofit= Retrofit.Builder()
         .baseUrl("https://openapi.foodsafetykorea.go.kr/")
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .client(okHttpClient)
         .build()
 

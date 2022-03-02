@@ -33,7 +33,6 @@ class MorningDietPage : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //return inflater.inflate(R.layout.morning_page, container, false)
         morningPageBinding=DataBindingUtil.inflate(inflater,R.layout.morning_page,container,false)
         return morningPageBinding.root
     }
@@ -58,8 +57,6 @@ class MorningDietPage : Fragment() {
         //val num=dViewModel.getMorningCount() //이 코드는 메인쓰레드 에러, 따라서 코루틴스코프에서 실행
         //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
-        //그럼 num을 어떻게 갖고오지..?;
-        //Observe를 ViewModel에서 호출??
 
         //diaryAdapter.list.clear()
         dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
@@ -90,7 +87,6 @@ class MorningDietPage : Fragment() {
                 deleteDialog.show()
                 //아이템 삭제(serial num으로 삭제)
                 dialogBinding.deleteDialogOkBtn.setOnClickListener(View.OnClickListener {
-                    //Log.e(TAG, list[position].serialNum.toString())
                     delete(list[position].serialNum)
                     deleteDialog.dismiss()
                     diaryAdapter.list.clear()

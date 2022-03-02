@@ -32,8 +32,6 @@ class LunchDietPage: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //return super.onCreateView(inflater, container, savedInstanceState)
-        //return inflater.inflate(R.layout.lunch_page, container, false)
         lunchBinding= DataBindingUtil.inflate(inflater,R.layout.lunch_page,container,false)
         return lunchBinding.root
     }
@@ -56,10 +54,8 @@ class LunchDietPage: Fragment() {
         deleteDialog.setCancelable(true)
 
         //val num=dViewModel.getMorningCount() //이 코드는 메인쓰레드 에러, 따라서 코루틴스코프에서 실행
-        //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
+        //morningList=dViewModel.getMorningAll() //얘는 no error? livedata 때문에?
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
-        //그럼 num을 어떻게 갖고오지..?;
-        //Observe를 ViewModel에서 호출??
 
         //diaryAdapter.list.clear()
         dViewModel.getLunchAll().observe(this.viewLifecycleOwner, Observer {
@@ -69,7 +65,6 @@ class LunchDietPage: Fragment() {
                     val category=it[i].category
                     val name=it[i].food_name
                     val calorie=it[i].food_calorie
-
                     if (category == "식사"){
                         val item=DiaryItemInList(serialNum,category,name,calorie,0)
                         diaryAdapter.add(item)

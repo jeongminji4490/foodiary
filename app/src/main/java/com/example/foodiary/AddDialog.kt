@@ -138,8 +138,14 @@ class AddDialog(private var context: Context){
                 try {
                     val name=selectedAdapter.getName(i)
                     val calorie=selectedAdapter.getCalorie(i)
-                    //아래 수정!!
-                    insert(morningDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
+
+                    if(timeText=="아침"){
+                        morningInsert(morningDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
+                    }else if(timeText=="점심"){
+                        lunchInsert(lunchDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
+                    }else{
+                        dinnerInsert(dinnerDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
+                    }
                     MotionToast.darkColorToast(
                         context as Activity,
                         "완료",
@@ -163,8 +169,16 @@ class AddDialog(private var context: Context){
         })
     }
 
-    fun insert(diary: morningDiary)=scope.launch {
+    fun morningInsert(diary: morningDiary)=scope.launch {
         dViewModel.morningInsert(diary)
+    }
+
+    fun lunchInsert(diary: lunchDiary)=scope.launch {
+        dViewModel.lunchInsert(diary)
+    }
+
+    fun dinnerInsert(diary: dinnerDiary)=scope.launch {
+        dViewModel.dinnerInsert(diary)
     }
 
     companion object{
