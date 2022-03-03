@@ -75,6 +75,10 @@ class DiaryAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.Vie
         list.add(d)
     }
 
+    fun addAll(d: ArrayList<DiaryItemInList>){
+        list.addAll(d)
+    }
+
     inner class MealHolder(val view: View): RecyclerView.ViewHolder(view){
         val name: TextView =view.findViewById(R.id.main_food_name)
         val calorie: TextView =view.findViewById(R.id.main_food_calorie)
