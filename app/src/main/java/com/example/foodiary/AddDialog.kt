@@ -29,7 +29,6 @@ import www.sanju.motiontoast.MotionToastStyle
 
 class AddDialog(private var context: Context){
     private val dialog=Dialog(context)
-    private var datas= arrayListOf<FoodItemInList>()
     private val adapter=SearchResultAdapter(context)
     private val selectedAdapter=SearchResultAdapter(context)
     private val viewModel=foodViewModel()
@@ -39,6 +38,7 @@ class AddDialog(private var context: Context){
     lateinit var selectedDate: String
     private lateinit var dViewModel: diaryViewModel
     private lateinit var dialogBinding: AddDietDialogBinding
+    private var num: Int=0
 
     fun showDialog(){
         //room db는 메인쓰레드에서 생성 불가
@@ -138,8 +138,9 @@ class AddDialog(private var context: Context){
                 try {
                     val name=selectedAdapter.getName(i)
                     val calorie=selectedAdapter.getCalorie(i)
+                    dateInsert(date(serialNum, selectedDate))
 
-                    if(timeText=="아침"){
+                    if(timeText=="아침"){ //date 테이블에 selectedDate가 존재한다면 date 테이블에 삽입 금지
                         morningInsert(morningDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
                     }else if(timeText=="점심"){
                         lunchInsert(lunchDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
@@ -179,6 +180,10 @@ class AddDialog(private var context: Context){
 
     fun dinnerInsert(diary: dinnerDiary)=scope.launch {
         dViewModel.dinnerInsert(diary)
+    }
+
+    fun dateInsert(d: date)=scope.launch{
+        dViewModel.dateInsert(d)
     }
 
     companion object{

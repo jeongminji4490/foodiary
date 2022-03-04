@@ -55,6 +55,10 @@ class MorningDietPage : Fragment() {
         deleteDialog.setCanceledOnTouchOutside(true)
         deleteDialog.setCancelable(true)
 
+        App.prefs.get("myDatePrefs")?.let { it1 ->
+            selectedDate=it1
+        }
+
         //val num=dViewModel.getMorningCount() //이 코드는 메인쓰레드 에러, 따라서 코루틴스코프에서 실행
         //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
@@ -64,23 +68,18 @@ class MorningDietPage : Fragment() {
             it?.let {
                 diaryList.clear()
                 for (i: Int in it.indices){
-                    val serialNum=it[i].serialNum
-                    val category=it[i].category
-                    val name=it[i].food_name
-                    val calorie=it[i].food_calorie
+                    if(it[i].date==selectedDate){
+                        val serialNum=it[i].serialNum
+                        val category=it[i].category
+                        val name=it[i].food_name
+                        val calorie=it[i].food_calorie
 
-                    if (category == "식사"){
-                        diaryList.add(DiaryItemInList(serialNum,category,name,calorie,0))
-                        //val item=DiaryItemInList(serialNum,category,name,calorie,0)
-                        //diaryAdapter.add(item)
-                    }else{
-                        diaryList.add(DiaryItemInList(serialNum,category,name,calorie,1))
-                        //val item=DiaryItemInList(serialNum,category,name,calorie,1)
-                        //diaryAdapter.add(item)
+                        if (category == "식사"){
+                            diaryList.add(DiaryItemInList(serialNum,category,name,calorie,0))
+                        }else{
+                            diaryList.add(DiaryItemInList(serialNum,category,name,calorie,1))
+                        }
                     }
-//                    diaryAdapter.addAll(diaryList)
-//                    morningPageBinding.mRecyclerView.adapter=diaryAdapter
-//                    morningPageBinding.mRecyclerView.layoutManager=LinearLayoutManager(context)
                 }
                 diaryAdapter.addAll(diaryList)
                 morningPageBinding.mRecyclerView.adapter=diaryAdapter
@@ -97,9 +96,7 @@ class MorningDietPage : Fragment() {
                 dialogBinding.deleteDialogOkBtn.setOnClickListener(View.OnClickListener {
                     delete(list[position].serialNum)
                     deleteDialog.dismiss()
-                    Log.e("before clear()", diaryAdapter.list.toString())
                     diaryAdapter.list.clear()
-                    Log.e("after clear()", diaryAdapter.list.toString())
                 })
                 dialogBinding.deleteDialogCancelBtn.setOnClickListener(View.OnClickListener {
                     deleteDialog.dismiss()

@@ -1,10 +1,7 @@
 package com.example.foodiary
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface DiaryDao {
@@ -19,8 +16,11 @@ interface DiaryDao {
     @Query("Select * From dinner")
     fun getDinnerAll(): LiveData<List<dinnerDiary>>
 
-    @Query("SELECT COUNT(serialNum) FROM morning")
-    fun getMorningCount(): Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun dateInsert(d: date)
+
+    @Query("SELECT * FROM date")
+    fun getDates(): LiveData<List<date>>
 
     @Insert
     suspend fun morningInsert(d: morningDiary)

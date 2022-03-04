@@ -26,6 +26,7 @@ class DinnerDietPage : Fragment() {
     private lateinit var lunchList: LiveData<List<morningDiary>>
     private lateinit var selectedDate: String
     private lateinit var dialogBinding: DeleteDietDialogBinding
+    private var diaryList: ArrayList<DiaryItemInList> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,24 +60,30 @@ class DinnerDietPage : Fragment() {
         //그럼 num을 어떻게 갖고오지..?;
         //Observe를 ViewModel에서 호출??
 
+        App.prefs.get("myDatePrefs")?.let { it1 ->
+            selectedDate=it1
+        }
+
         //diaryAdapter.list.clear()
         dViewModel.getDinnerAll().observe(this.viewLifecycleOwner, Observer {
             it?.let {
+                diaryList.clear()
                 for (i: Int in it.indices){
-                    val serialNum=it[i].serialNum
-                    val category=it[i].category
-                    val name=it[i].food_name
-                    val calorie=it[i].food_calorie
-                    if (category == "식사"){
-                        val item=DiaryItemInList(serialNum,category,name,calorie,0)
-                        diaryAdapter.add(item)
-                    }else{
-                        val item=DiaryItemInList(serialNum,category,name,calorie,1)
-                        diaryAdapter.add(item)
+                    if (it[i].date==selectedDate){
+                        val serialNum=it[i].serialNum
+                        val category=it[i].category
+                        val name=it[i].food_name
+                        val calorie=it[i].food_calorie
+                        if (category == "식사"){
+                            diaryList.add(DiaryItemInList(serialNum,category,name,calorie,0))
+                        }else{
+                            diaryList.add(DiaryItemInList(serialNum,category,name,calorie,1))
+                        }
                     }
-                    dinnerBinding.mRecyclerView.adapter=diaryAdapter
-                    dinnerBinding.mRecyclerView.layoutManager= LinearLayoutManager(context)
                 }
+                diaryAdapter.addAll(diaryList)
+                dinnerBinding.mRecyclerView.adapter=diaryAdapter
+                dinnerBinding.mRecyclerView.layoutManager=LinearLayoutManager(context)
             }
         })
 
@@ -87,7 +94,6 @@ class DinnerDietPage : Fragment() {
                 deleteDialog.show()
                 //아이템 삭제(serial num으로 삭제)
                 dialogBinding.deleteDialogOkBtn.setOnClickListener(View.OnClickListener {
-                    //Log.e(TAG, list[position].serialNum.toString())
                     delete(list[position].serialNum)
                     deleteDialog.dismiss()
                     diaryAdapter.list.clear()

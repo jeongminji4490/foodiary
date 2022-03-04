@@ -3,28 +3,14 @@ package com.example.foodiary
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.gson.GsonBuilder
-import kotlinx.coroutines.selects.select
 import nl.joery.animatedbottombar.AnimatedBottomBar
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
     //by lazy : 각 변수가 처음 사용되는 시점에서 지연 초기화
     private val TodayDietFragment by lazy { TodayDiet() }
-    private val EmptyFragment by lazy { EmptyPage() }
+    private val EmptyFragment by lazy { ListPage() }
     private val bottomBar: AnimatedBottomBar by lazy {
         findViewById(R.id.bottom_bar)
     }

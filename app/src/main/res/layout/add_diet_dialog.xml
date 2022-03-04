@@ -19,30 +19,6 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:ignore="MissingConstraints" />
 
-        <EditText
-            android:id="@+id/search_edit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:hint="검색"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/category_spinner"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/searchBtn"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/searchBtn"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_margin="5dp"
-            android:backgroundTint="#BFBDBD"
-            android:text="GO"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/search_edit"
-            app:layout_constraintTop_toBottomOf="@id/category_spinner"
-            tools:ignore="MissingConstraints" />
-
         <TextView
             android:id="@+id/search_text"
             android:layout_width="0dp"
@@ -50,11 +26,11 @@
             android:layout_margin="5dp"
             android:background="#BFBDBD"
             android:gravity="center"
-            android:text="검색결과"
+            android:text="목록"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_edit"
+            app:layout_constraintTop_toBottomOf="@id/category_spinner"
             tools:ignore="MissingConstraints" />
 
         <TextView

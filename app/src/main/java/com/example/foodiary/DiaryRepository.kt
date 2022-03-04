@@ -22,8 +22,12 @@ class DiaryRepository(application: Application) {
         return dao.getDinnerAll()
     }
 
-    fun getMorningCount(): Int{
-        return dao.getMorningCount()
+    fun getDateAll(): LiveData<List<date>>{
+        return dao.getDates()
+    }
+
+    suspend fun dateInsert(date: date){
+        dao.dateInsert(date)
     }
 
     suspend fun morningInsert(diary: morningDiary){

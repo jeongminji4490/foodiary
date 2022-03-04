@@ -21,8 +21,12 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getDinnerAll()
     }
 
-    fun getMorningCount(): Int{
-        return repository.getMorningCount()
+    fun getDateAll(): LiveData<List<date>>{
+        return repository.getDateAll()
+    }
+
+    suspend fun dateInsert(date: date){
+        repository.dateInsert(date)
     }
 
     suspend fun morningInsert(diary: morningDiary){

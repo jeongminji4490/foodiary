@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [morningDiary::class, lunchDiary::class, dinnerDiary::class],
+    entities = [morningDiary::class, lunchDiary::class, dinnerDiary::class, date::class],
     version = 1,
     exportSchema = false
 )

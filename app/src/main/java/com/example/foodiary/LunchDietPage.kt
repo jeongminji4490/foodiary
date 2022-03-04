@@ -26,6 +26,7 @@ class LunchDietPage: Fragment() {
     private lateinit var lunchList: LiveData<List<morningDiary>>
     private lateinit var selectedDate: String
     private lateinit var dialogBinding: DeleteDietDialogBinding
+    private var diaryList: ArrayList<DiaryItemInList> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,24 +58,30 @@ class LunchDietPage: Fragment() {
         //morningList=dViewModel.getMorningAll() //얘는 no error? livedata 때문에?
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
 
+        App.prefs.get("myDatePrefs")?.let { it1 ->
+            selectedDate=it1
+        }
+
         //diaryAdapter.list.clear()
         dViewModel.getLunchAll().observe(this.viewLifecycleOwner, Observer {
+            diaryList.clear()
             it?.let {
                 for (i: Int in it.indices){
-                    val serialNum=it[i].serialNum
-                    val category=it[i].category
-                    val name=it[i].food_name
-                    val calorie=it[i].food_calorie
-                    if (category == "식사"){
-                        val item=DiaryItemInList(serialNum,category,name,calorie,0)
-                        diaryAdapter.add(item)
-                    }else{
-                        val item=DiaryItemInList(serialNum,category,name,calorie,1)
-                        diaryAdapter.add(item)
+                    if(it[i].date==selectedDate){
+                        val serialNum=it[i].serialNum
+                        val category=it[i].category
+                        val name=it[i].food_name
+                        val calorie=it[i].food_calorie
+                        if (category == "식사"){
+                            diaryList.add(DiaryItemInList(serialNum,category,name,calorie,0))
+                        }else{
+                            diaryList.add(DiaryItemInList(serialNum,category,name,calorie,1))
+                        }
                     }
-                    lunchBinding.mRecyclerView.adapter=diaryAdapter
-                    lunchBinding.mRecyclerView.layoutManager= LinearLayoutManager(context)
                 }
+                diaryAdapter.addAll(diaryList)
+                lunchBinding.mRecyclerView.adapter=diaryAdapter
+                lunchBinding.mRecyclerView.layoutManager=LinearLayoutManager(context)
             }
         })
 
