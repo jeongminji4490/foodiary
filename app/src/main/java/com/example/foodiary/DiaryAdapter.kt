@@ -125,4 +125,8 @@ class ListAdapter(val context: Context): BaseAdapter(){
     }
 
     fun addAll(data: ArrayList<FoodItemInList>){ list.addAll(data) }
+
+    fun removeAll(){
+        list.clear()
+    }
 }

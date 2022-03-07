@@ -55,9 +55,10 @@ class MorningDietPage : Fragment() {
         deleteDialog.setCanceledOnTouchOutside(true)
         deleteDialog.setCancelable(true)
 
-        App.prefs.get("myDatePrefs")?.let { it1 ->
-            selectedDate=it1
-        }
+//        App.prefs.get("myDatePrefs")?.let { it1 ->
+//            selectedDate=it1
+//        }
+//        Log.e(TAG,selectedDate)
 
         //val num=dViewModel.getMorningCount() //이 코드는 메인쓰레드 에러, 따라서 코루틴스코프에서 실행
         //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
@@ -66,7 +67,12 @@ class MorningDietPage : Fragment() {
         //diaryList.clear()
         dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
             it?.let {
+                App.prefs.get("myDatePrefs")?.let { it1 ->
+                    selectedDate=it1
+                }
+                Log.e(TAG,selectedDate)
                 diaryList.clear()
+                Log.e(TAG,diaryList.toString())
                 for (i: Int in it.indices){
                     if(it[i].date==selectedDate){
                         val serialNum=it[i].serialNum

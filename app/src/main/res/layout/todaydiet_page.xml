@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageButton
+        android:id="@+id/date_leftBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitCenter"
+        android:background="#00ff0000"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rectangleImg"
+        app:layout_constraintTop_toTopOf="@id/rectangleImg"
+        app:layout_constraintBottom_toBottomOf="@id/rectangleImg"
+        android:src="@drawable/spoonfork"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/todayDateText"
         android:layout_width="0dp"
@@ -15,8 +29,8 @@
         android:text="2022/00/00"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/date_rightBtn"
+        app:layout_constraintStart_toEndOf="@id/date_leftBtn"
         app:layout_constraintTop_toTopOf="@id/rectangleImg"
         app:layout_constraintBottom_toBottomOf="@id/rectangleImg"
         tools:ignore="MissingConstraints" />
@@ -25,11 +39,25 @@
         android:id="@+id/rectangleImg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toEndOf="@id/date_leftBtn"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/date_rightBtn"
         android:src="@drawable/rectangle"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/date_rightBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:scaleType="fitCenter"
+        android:background="#00ff0000"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toEndOf="@id/rectangleImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/rectangleImg"
+        app:layout_constraintBottom_toBottomOf="@id/rectangleImg"
+        android:src="@drawable/spoonfork"
         tools:ignore="MissingConstraints" />
 
     <androidx.viewpager2.widget.ViewPager2
@@ -38,8 +66,8 @@
         android:layout_height="0dp"
         android:layout_margin="12dp"
         app:layout_constraintTop_toBottomOf="@id/rectangleImg"
-        app:layout_constraintStart_toStartOf="@id/rectangleImg"
-        app:layout_constraintEnd_toEndOf="@id/rectangleImg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="MissingConstraints" />
 

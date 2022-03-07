@@ -35,8 +35,8 @@ class TodayDiet : Fragment() {
         val viewPager: ViewPager2 =view.findViewById(R.id.diet_viewPager)
         val fragmentStateAdapter = FragmentStateAdapter(this)
         viewPager.adapter=fragmentStateAdapter //어댑터와 뷰페이저 연결
-//        val leftBtn:ImageButton=view.findViewById(R.id.date_leftBtn)
-//        val rightBtn:ImageButton=view.findViewById(R.id.date_rightBtn)
+        val leftBtn:ImageButton=view.findViewById(R.id.date_leftBtn)
+        val rightBtn:ImageButton=view.findViewById(R.id.date_rightBtn)
         val selectedDateText: TextView=view.findViewById(R.id.todayDateText)
 
         currentDate() //먼저 오늘 날짜로 초기화
@@ -45,23 +45,23 @@ class TodayDiet : Fragment() {
         App.prefs.set("myDatePrefs",selectedDate)
 
         //이전 날짜로
-//        leftBtn.setOnClickListener(View.OnClickListener {
-//            calendar.add(Calendar.DATE,-1)
-//            currentDate=calendar.time
-//            selectedDate=currentDate.dateToString("yyyy-MM-dd")
-//            selectedDateText.text=selectedDate
-//            App.prefs.set("myDatePrefs",selectedDate)
-//            Log.d(TAG,selectedDate)
-//        })
-//        //다음 날짜로
-//        rightBtn.setOnClickListener(View.OnClickListener {
-//            calendar.add(Calendar.DATE,1)
-//            currentDate=calendar.time
-//            selectedDate=currentDate.dateToString("yyyy-MM-dd")
-//            selectedDateText.text=selectedDate
-//            App.prefs.set("myDatePrefs",selectedDate)
-//            Log.d(TAG,selectedDate)
-//        })
+        leftBtn.setOnClickListener(View.OnClickListener {
+            calendar.add(Calendar.DATE,-1)
+            currentDate=calendar.time
+            selectedDate=currentDate.dateToString("yyyy-MM-dd")
+            selectedDateText.text=selectedDate
+            App.prefs.set("myDatePrefs",selectedDate)
+            Log.d(TAG,selectedDate)
+        })
+        //다음 날짜로
+        rightBtn.setOnClickListener(View.OnClickListener {
+            calendar.add(Calendar.DATE,1)
+            currentDate=calendar.time
+            selectedDate=currentDate.dateToString("yyyy-MM-dd")
+            selectedDateText.text=selectedDate
+            App.prefs.set("myDatePrefs",selectedDate)
+            Log.d(TAG,selectedDate)
+        })
     }
 
     fun Date.dateToString(format: String, local: Locale=Locale.getDefault()): String{

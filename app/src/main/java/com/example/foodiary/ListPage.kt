@@ -76,22 +76,18 @@ class ListPage : Fragment() {
                 gridView.adapter=adapter
             }
         })
-        mfoodList.clear()
-        lfoodList.clear()
-        dfoodList.clear()
 
         gridView.onItemClickListener = OnItemClickListener { a_parent, a_view, a_position, a_id ->
-                //Toast.makeText(context, " Click event", Toast.LENGTH_SHORT).show()
                 val selectedDate=adapter.getItem(a_position)
-                Log.e("ListPage",selectedDate.toString())
                 viewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
+                    mfoodList.clear()
+                    listAdapter1.removeAll()
                     it?.let {
                         for (i: Int in it.indices){
                             if(it[i].date==selectedDate){
                                 val name=it[i].food_name
                                 val calorie=it[i].food_calorie
                                 mfoodList.add(FoodItemInList(name, calorie))
-                                Log.e("ListPage",mfoodList[i].name)
                             }
                         }
                         listAdapter1.addAll(mfoodList)
@@ -100,6 +96,8 @@ class ListPage : Fragment() {
                 })
                 viewModel.getLunchAll().observe(this.viewLifecycleOwner, Observer {
                     it?.let {
+                        lfoodList.clear()
+                        listAdapter2.removeAll()
                         for (i: Int in it.indices){
                             if(it[i].date==selectedDate){
                                 val name=it[i].food_name
@@ -113,6 +111,8 @@ class ListPage : Fragment() {
                 })
                 viewModel.getDinnerAll().observe(this.viewLifecycleOwner, Observer {
                     it?.let {
+                        dfoodList.clear()
+                        listAdapter3.removeAll()
                         for (i: Int in it.indices){
                             if(it[i].date==selectedDate){
                                 val name=it[i].food_name
