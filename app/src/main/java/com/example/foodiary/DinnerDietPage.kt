@@ -5,12 +5,14 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodiary.databinding.DeleteDietDialogBinding
 import com.example.foodiary.databinding.DinnerPageBinding
@@ -23,6 +25,7 @@ class DinnerDietPage : Fragment() {
     private lateinit var diaryAdapter: DiaryAdapter
     private lateinit var dViewModel: diaryViewModel
     private val scope= CoroutineScope(Dispatchers.IO)
+    private lateinit var liveData: LiveData<String>
     private lateinit var lunchList: LiveData<List<morningDiary>>
     private lateinit var selectedDate: String
     private lateinit var dialogBinding: DeleteDietDialogBinding
@@ -60,9 +63,14 @@ class DinnerDietPage : Fragment() {
         //그럼 num을 어떻게 갖고오지..?;
         //Observe를 ViewModel에서 호출??
 
-        App.prefs.get("myDatePrefs")?.let { it1 ->
-            selectedDate=it1
-        }
+//        App.prefs.get("myDatePrefs")?.let { it1 ->
+//            selectedDate=it1
+//        }
+        liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
+        liveData.observe(this.viewLifecycleOwner, Observer {
+            selectedDate=it
+            Log.e(TAG, selectedDate)
+        })
 
         //diaryAdapter.list.clear()
         dViewModel.getDinnerAll().observe(this.viewLifecycleOwner, Observer {

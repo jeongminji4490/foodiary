@@ -51,10 +51,10 @@ class AddDialog(private var context: Context){
 
         dViewModel=ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application).create(diaryViewModel::class.java)
         val foodService=FoodClient.foodService
-        App.prefs.get("myDatePrefs")?.let { it1 ->
-            selectedDate=it1
-        }
-        Log.d(TAG,timeText)
+//        App.prefs.get("myDatePrefs")?.let { it1 ->
+//            selectedDate=it1
+//        }
+        //Log.d(TAG,timeText)
 
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
         val serialNum: Int=0

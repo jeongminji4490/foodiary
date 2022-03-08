@@ -5,12 +5,14 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodiary.databinding.DeleteDietDialogBinding
 import com.example.foodiary.databinding.LunchPageBinding
@@ -23,6 +25,7 @@ class LunchDietPage: Fragment() {
     private lateinit var diaryAdapter: DiaryAdapter
     private lateinit var dViewModel: diaryViewModel
     private val scope= CoroutineScope(Dispatchers.IO)
+    private lateinit var liveData: LiveData<String>
     private lateinit var lunchList: LiveData<List<morningDiary>>
     private lateinit var selectedDate: String
     private lateinit var dialogBinding: DeleteDietDialogBinding
@@ -58,9 +61,15 @@ class LunchDietPage: Fragment() {
         //morningList=dViewModel.getMorningAll() //얘는 no error? livedata 때문에?
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
 
-        App.prefs.get("myDatePrefs")?.let { it1 ->
-            selectedDate=it1
-        }
+//        App.prefs.get("myDatePrefs")?.let { it1 ->
+//            selectedDate=it1
+//        }
+
+        liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
+        liveData.observe(this.viewLifecycleOwner, Observer {
+            selectedDate=it
+            Log.e(TAG, selectedDate)
+        })
 
         //diaryAdapter.list.clear()
         dViewModel.getLunchAll().observe(this.viewLifecycleOwner, Observer {

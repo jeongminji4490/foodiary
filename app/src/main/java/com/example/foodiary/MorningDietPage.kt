@@ -18,11 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodiary.databinding.DeleteDietDialogBinding
 import com.example.foodiary.databinding.MorningPageBinding
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 
 class MorningDietPage : Fragment() {
     private lateinit var diaryAdapter: DiaryAdapter
     private lateinit var dViewModel: diaryViewModel
     private val scope= CoroutineScope(Dispatchers.IO)
+    private lateinit var liveData: LiveData<String>
     private lateinit var morningList: LiveData<List<morningDiary>>
     private lateinit var selectedDate: String
     private lateinit var morningPageBinding: MorningPageBinding
@@ -55,10 +57,12 @@ class MorningDietPage : Fragment() {
         deleteDialog.setCanceledOnTouchOutside(true)
         deleteDialog.setCancelable(true)
 
-//        App.prefs.get("myDatePrefs")?.let { it1 ->
-//            selectedDate=it1
-//        }
-//        Log.e(TAG,selectedDate)
+        liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
+        liveData.observe(this.viewLifecycleOwner, Observer {
+            selectedDate=it
+            Log.e(TAG, selectedDate)
+        })
+
 
         //val num=dViewModel.getMorningCount() //이 코드는 메인쓰레드 에러, 따라서 코루틴스코프에서 실행
         //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
@@ -67,14 +71,11 @@ class MorningDietPage : Fragment() {
         //diaryList.clear()
         dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
             it?.let {
-                App.prefs.get("myDatePrefs")?.let { it1 ->
-                    selectedDate=it1
-                }
-                Log.e(TAG,selectedDate)
                 diaryList.clear()
                 Log.e(TAG,diaryList.toString())
                 for (i: Int in it.indices){
                     if(it[i].date==selectedDate){
+                        Log.e("Morning_date_in_dViewModel",selectedDate)
                         val serialNum=it[i].serialNum
                         val category=it[i].category
                         val name=it[i].food_name
