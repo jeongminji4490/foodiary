@@ -11,15 +11,14 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodiary.databinding.AddDietDialogBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable.start
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,9 +32,10 @@ class AddDialog(private var context: Context){
     private val selectedAdapter=SearchResultAdapter(context)
     private val viewModel=foodViewModel()
     private val scope= CoroutineScope(Dispatchers.IO)
+    private lateinit var liveData: LiveData<String>
     lateinit var lifecycleOwner: LifecycleOwner
     lateinit var timeText: String
-    lateinit var selectedDate: String
+    private lateinit var selectedDate: String
     private lateinit var dViewModel: diaryViewModel
     private lateinit var dialogBinding: AddDietDialogBinding
     private var num: Int=0
@@ -51,10 +51,12 @@ class AddDialog(private var context: Context){
 
         dViewModel=ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application).create(diaryViewModel::class.java)
         val foodService=FoodClient.foodService
-//        App.prefs.get("myDatePrefs")?.let { it1 ->
-//            selectedDate=it1
-//        }
-        //Log.d(TAG,timeText)
+
+        liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
+        liveData.observe(lifecycleOwner, Observer {
+            selectedDate=it
+            Log.e(TAG, selectedDate)
+        })
 
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
         val serialNum: Int=0
@@ -68,10 +70,11 @@ class AddDialog(private var context: Context){
                     }else{
                         response.body()?.let {
                             dialogBinding.loadingText.visibility=View.GONE
-                            for (i: Int in 0..50){
+                            for (i: Int in 0..999){
                                 val name=it.list.food[i].foodName
                                 val kcal=it.list.food[i].kcal
                                 viewModel.addItem(FoodItemInList(name, kcal))
+                                Log.e(TAG,name)
                             }
                         }
                     }
@@ -156,14 +159,18 @@ class AddDialog(private var context: Context){
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
                     )
-                    val intent= Intent(context,MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    dialog.dismiss()
-                    context.startActivity(intent)
+//                    val intent= Intent(context,MainActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//                    dialog.dismiss()
+//                    context.startActivity(intent)
                 }catch (e: IndexOutOfBoundsException){
                     Log.e(TAG,"IndexOutOfBouncsException") //이부분 오류발생, 근데 저장은 잘 됨...
                 }
             }
+            val intent= Intent(context,MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            dialog.dismiss()
+            context.startActivity(intent)
         })
         dialogBinding.dialogCancelBtn.setOnClickListener(View.OnClickListener {
             dialog.dismiss()

@@ -68,14 +68,11 @@ class MorningDietPage : Fragment() {
         //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
 
-        //diaryList.clear()
         dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
             it?.let {
                 diaryList.clear()
-                Log.e(TAG,diaryList.toString())
                 for (i: Int in it.indices){
                     if(it[i].date==selectedDate){
-                        Log.e("Morning_date_in_dViewModel",selectedDate)
                         val serialNum=it[i].serialNum
                         val category=it[i].category
                         val name=it[i].food_name

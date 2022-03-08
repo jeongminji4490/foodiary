@@ -63,9 +63,6 @@ class DinnerDietPage : Fragment() {
         //그럼 num을 어떻게 갖고오지..?;
         //Observe를 ViewModel에서 호출??
 
-//        App.prefs.get("myDatePrefs")?.let { it1 ->
-//            selectedDate=it1
-//        }
         liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
         liveData.observe(this.viewLifecycleOwner, Observer {
             selectedDate=it
@@ -125,7 +122,7 @@ class DinnerDietPage : Fragment() {
     }
 
     companion object{
-        private const val TAG="LunchDietPage"
+        private const val TAG="DinnerDietPage"
     }
 
 }

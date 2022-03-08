@@ -17,6 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ListPage : Fragment() {
@@ -25,6 +27,7 @@ class ListPage : Fragment() {
     private lateinit var listAdapter2: ListAdapter
     private lateinit var listAdapter3: ListAdapter
     private lateinit var viewModel: diaryViewModel
+    private var dateList= ArrayList<String>()
     private lateinit var dialog: Dialog
     private var list=ArrayList<String>()
     private var mfoodList=ArrayList<FoodItemInList>()
@@ -62,7 +65,7 @@ class ListPage : Fragment() {
         val lListView: ListView=dialog.findViewById(R.id.lunch_listView)
         val dListView: ListView=dialog.findViewById(R.id.dinner_listView)
 
-        list.clear()
+        dateList.clear()
 
         //세로도 고려
         viewModel.getDateAll().observe(this.viewLifecycleOwner, Observer {
@@ -70,9 +73,10 @@ class ListPage : Fragment() {
                 for (i: Int in it.indices){
                     //날짜 저장하는 데이터베이스 생성
                     val date=it[i].date
-                    list.add(date)
+                    dateList.add(date)
                 }
-                adapter.addAll(list)
+                dateList.sort()
+                adapter.addAll(dateList)
                 gridView.adapter=adapter
             }
         })

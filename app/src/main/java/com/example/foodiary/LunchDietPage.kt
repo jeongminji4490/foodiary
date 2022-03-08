@@ -61,10 +61,6 @@ class LunchDietPage: Fragment() {
         //morningList=dViewModel.getMorningAll() //얘는 no error? livedata 때문에?
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
 
-//        App.prefs.get("myDatePrefs")?.let { it1 ->
-//            selectedDate=it1
-//        }
-
         liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
         liveData.observe(this.viewLifecycleOwner, Observer {
             selectedDate=it
@@ -101,7 +97,6 @@ class LunchDietPage: Fragment() {
                 deleteDialog.show()
                 //아이템 삭제(serial num으로 삭제)
                 dialogBinding.deleteDialogOkBtn.setOnClickListener(View.OnClickListener {
-                    //Log.e(TAG, list[position].serialNum.toString())
                     delete(list[position].serialNum)
                     deleteDialog.dismiss()
                     diaryAdapter.list.clear()
