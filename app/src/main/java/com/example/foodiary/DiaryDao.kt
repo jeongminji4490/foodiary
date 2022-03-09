@@ -22,6 +22,9 @@ interface DiaryDao {
     @Query("SELECT * FROM date")
     fun getDates(): LiveData<List<date>>
 
+    @Query("DELETE FROM date WHERE date = :date")
+    suspend fun deleteDate(date: String)
+
     @Insert
     suspend fun morningInsert(d: morningDiary)
 
@@ -39,5 +42,15 @@ interface DiaryDao {
 
     @Query("DELETE FROM dinner WHERE serialNum = :serialNum")
     suspend fun deleteDinner(serialNum: Int)
+
+    @Query("DELETE FROM morning WHERE date = :date")
+    suspend fun deleteMdate(date: String)
+
+    @Query("DELETE FROM lunch WHERE date = :date")
+    suspend fun deleteLdate(date: String)
+
+    @Query("DELETE FROM dinner WHERE date = :date")
+    suspend fun deleteDdate(date: String)
+
 
 }

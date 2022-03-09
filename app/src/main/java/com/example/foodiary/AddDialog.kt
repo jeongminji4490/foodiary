@@ -35,10 +35,10 @@ class AddDialog(private var context: Context){
     private lateinit var liveData: LiveData<String>
     lateinit var lifecycleOwner: LifecycleOwner
     lateinit var timeText: String
+    private val dateApp=DateApp.getInstance()
     private lateinit var selectedDate: String
     private lateinit var dViewModel: diaryViewModel
     private lateinit var dialogBinding: AddDietDialogBinding
-    private var num: Int=0
 
     fun showDialog(){
         //room db는 메인쓰레드에서 생성 불가
@@ -74,7 +74,6 @@ class AddDialog(private var context: Context){
                                 val name=it.list.food[i].foodName
                                 val kcal=it.list.food[i].kcal
                                 viewModel.addItem(FoodItemInList(name, kcal))
-                                Log.e(TAG,name)
                             }
                         }
                     }
@@ -148,6 +147,7 @@ class AddDialog(private var context: Context){
                     }else{
                         dinnerInsert(dinnerDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
                     }
+
                     MotionToast.darkColorToast(
                         context as Activity,
                         "완료",

@@ -25,10 +25,12 @@ class MorningDietPage : Fragment() {
     private lateinit var dViewModel: diaryViewModel
     private val scope= CoroutineScope(Dispatchers.IO)
     private lateinit var liveData: LiveData<String>
+    private lateinit var vLiveData: LiveData<String>
     private lateinit var morningList: LiveData<List<morningDiary>>
     private lateinit var selectedDate: String
     private lateinit var morningPageBinding: MorningPageBinding
     private lateinit var dialogBinding: DeleteDietDialogBinding
+    private lateinit var lifecycleOwner: LifecycleOwner
     private var diaryList: ArrayList<DiaryItemInList> = ArrayList()
 
     override fun onCreateView(
@@ -56,17 +58,18 @@ class MorningDietPage : Fragment() {
             WindowManager.LayoutParams.WRAP_CONTENT)
         deleteDialog.setCanceledOnTouchOutside(true)
         deleteDialog.setCancelable(true)
+        lifecycleOwner=this
 
         liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
-        liveData.observe(this.viewLifecycleOwner, Observer {
+        liveData.observe(lifecycleOwner, Observer {
             selectedDate=it
             Log.e(TAG, selectedDate)
         })
 
-
         //val num=dViewModel.getMorningCount() //이 코드는 메인쓰레드 에러, 따라서 코루틴스코프에서 실행
         //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
         /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
+        /**모든 타임에 저장된 아이템이 없다면 date 데이터베이스에서 해당 날짜를 삭제해야함**/
 
         dViewModel.getMorningAll().observe(this.viewLifecycleOwner, Observer {
             it?.let {
@@ -97,8 +100,10 @@ class MorningDietPage : Fragment() {
             override fun onClick(view: View, position: Int, list: ArrayList<DiaryItemInList>) {
                 deleteDialog.show()
                 //아이템 삭제(serial num으로 삭제)
+                //여기서 date database 삭제 관리?
                 dialogBinding.deleteDialogOkBtn.setOnClickListener(View.OnClickListener {
                     delete(list[position].serialNum)
+                    //리스트에 데이터가 없으면
                     deleteDialog.dismiss()
                     diaryAdapter.list.clear()
                 })
@@ -119,6 +124,9 @@ class MorningDietPage : Fragment() {
     fun delete(serialNum: Int)=scope.launch {
         dViewModel.morningDelete(serialNum)
     }
+
+    //만약 selectedDate에 해당하는 날짜가 존재하지 않는다면 최종적으로
+    //data store 사용?
 
     companion object{
         private const val TAG="MorningDietPage"

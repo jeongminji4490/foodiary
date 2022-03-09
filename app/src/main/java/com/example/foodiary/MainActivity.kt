@@ -11,9 +11,13 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import com.example.foodiary.databinding.ActivityMainBinding
 import com.example.foodiary.databinding.MainpageItemBinding
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -23,6 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val EmptyFragment by lazy { ListPage() }
     private val LicenseFragment by lazy { LicensePage() }
     private lateinit var binding: ActivityMainBinding
+    private lateinit var liveData: LiveData<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

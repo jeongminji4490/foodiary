@@ -1,9 +1,7 @@
 package com.example.foodiary
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 
 class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository= DiaryRepository(application)
@@ -27,6 +25,14 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
 
     suspend fun dateInsert(date: date){
         repository.dateInsert(date)
+    }
+
+    suspend fun dateDelete(date: String){
+        repository.dateDelete(date)
+    }
+
+    suspend fun deleteAll(date: String){
+        repository.AllDateDelete(date)
     }
 
     suspend fun morningInsert(diary: morningDiary){

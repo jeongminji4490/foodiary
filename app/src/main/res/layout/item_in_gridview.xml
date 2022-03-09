@@ -5,33 +5,43 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/rectangle"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/recipes"
-        android:layout_margin="5dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/dateText"
-        app:layout_constraintStart_toStartOf="@id/dateText"
-        app:layout_constraintEnd_toEndOf="@id/dateText"
-        tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/dateText"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/date_cslayout"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="17dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dateText"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="2020/0000"/>
+        android:background="@drawable/rectangle"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/dateImg"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/recipes"
+            android:layout_margin="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/dateText"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="17dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dateImg"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="2020/0000"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

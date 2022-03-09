@@ -14,7 +14,7 @@ import java.util.concurrent.Flow
 class DateDataStore(val context: Context) {
     private val Context.dataStore by preferencesDataStore(name="dateStore")
 
-    private val key= stringPreferencesKey("dateKey")
+    private val date_key= stringPreferencesKey("dateKey")
 
     //값 읽어오기
     //map을 이용해 DataStore에 저장되어 있는 값을 키를 통해 가져옴, 이때 반환되는 값은 Flow
@@ -26,14 +26,14 @@ class DateDataStore(val context: Context) {
                 throw exception
             }
         }.map { preferences ->
-            preferences[key] ?: ""
+            preferences[date_key] ?: ""
         }
 
     //키를 이용해 값 저장하기
     //DataStore의 값을 쓸 때는 edit을 사용하고, 비동기로 작업해야함
     suspend fun setDate(date : String){
         context.dataStore.edit { preferences ->
-            preferences[key]=date
+            preferences[date_key]=date
         }
     }
 

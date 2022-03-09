@@ -30,6 +30,16 @@ class DiaryRepository(application: Application) {
         dao.dateInsert(date)
     }
 
+    suspend fun dateDelete(date: String){
+        dao.deleteDate(date)
+    }
+
+    suspend fun AllDateDelete(date: String){
+        dao.deleteMdate(date)
+        dao.deleteLdate(date)
+        dao.deleteDdate(date)
+    }
+
     suspend fun morningInsert(diary: morningDiary){
         dao.morningInsert(diary)
     }
