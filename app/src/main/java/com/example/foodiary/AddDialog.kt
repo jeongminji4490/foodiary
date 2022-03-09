@@ -86,8 +86,6 @@ class AddDialog(private var context: Context){
 
             })
         dialogBinding.searchRecyclerView.addItemDecoration(decoration)
-//        adapter.list=datas
-//        adapter.addAll(datas)
 
         //category spinner
         ArrayAdapter.createFromResource(
@@ -120,7 +118,7 @@ class AddDialog(private var context: Context){
         }
 
         //직접 입력한 데이터 추가
-        dialogBinding.directInputBtn.setOnClickListener(View.OnClickListener {
+        dialogBinding.directInputBtn.setOnClickListener {
             if (dialogBinding.directNameEdit.text.toString().isEmpty()) { //식품명이 비어있다면(칼로리는 안적어도됨!){
                 Toast.makeText(context,"식품명을 적어주세요",Toast.LENGTH_SHORT).show()
             }else{
@@ -128,14 +126,14 @@ class AddDialog(private var context: Context){
                 dialogBinding.searchSelectRecyclerView.adapter=selectedAdapter
                 dialogBinding.searchSelectRecyclerView.layoutManager=LinearLayoutManager(context)
             }
-        })
+        }
 
         dialog.show()
 
         //save & cancel button click event
         //serial_num, 날짜, 식사시간, 카테고리, 음식이름, 칼로리 db에 저장
         //일지 제대로 저장되는지 확인하고(ok), 메인페이지에서 리스트업하기!
-        dialogBinding.dialogSaveBtn.setOnClickListener(View.OnClickListener {
+        dialogBinding.dialogSaveBtn.setOnClickListener {
             //sRecyclerView에 있는거 다 저장, 즉 selectedAdapter의 모든 아이템들을 저장해야함
             for (i: Int in 0..selectedAdapter.itemCount){
                 try {
@@ -159,10 +157,6 @@ class AddDialog(private var context: Context){
                         MotionToast.LONG_DURATION,
                         ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
                     )
-//                    val intent= Intent(context,MainActivity::class.java)
-//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//                    dialog.dismiss()
-//                    context.startActivity(intent)
                 }catch (e: IndexOutOfBoundsException){
                     Log.e(TAG,"IndexOutOfBouncsException") //이부분 오류발생, 근데 저장은 잘 됨...
                 }
@@ -171,7 +165,7 @@ class AddDialog(private var context: Context){
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             dialog.dismiss()
             context.startActivity(intent)
-        })
+        }
         dialogBinding.dialogCancelBtn.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
         })

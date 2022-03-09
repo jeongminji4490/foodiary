@@ -108,12 +108,12 @@ class MorningDietPage : Fragment() {
             }
         }
 
-        morningPageBinding.mAddBtn.setOnClickListener(View.OnClickListener {
+        morningPageBinding.mAddBtn.setOnClickListener {
             val dialog=AddDialog(context as Activity)
             dialog.lifecycleOwner=this.viewLifecycleOwner
             dialog.timeText=morningPageBinding.morningText.text.toString()
             dialog.showDialog()
-        })
+        }
     }
 
     fun delete(serialNum: Int)=scope.launch {

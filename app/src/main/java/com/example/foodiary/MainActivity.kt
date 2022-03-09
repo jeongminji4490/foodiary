@@ -3,55 +3,44 @@ package com.example.foodiary
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.MenuItem
+import android.view.View
+import android.widget.ImageButton
+import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.example.foodiary.databinding.ActivityMainBinding
+import com.example.foodiary.databinding.MainpageItemBinding
+import com.google.android.material.navigation.NavigationView
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     //by lazy : 각 변수가 처음 사용되는 시점에서 지연 초기화
     private val TodayDietFragment by lazy { TodayDiet() }
     private val EmptyFragment by lazy { ListPage() }
-    private val bottomBar: AnimatedBottomBar by lazy {
-        findViewById(R.id.bottom_bar)
-    }
+    private val LicenseFragment by lazy { LicensePage() }
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding=DataBindingUtil.setContentView(this,R.layout.activity_main)
 
-        val foodService=FoodClient.foodService
+        val naviView: NavigationView=findViewById(R.id.navi_view)
 
         runBottomBar()
-
-
-//        foodService.getFoodName("af2bd97db6b846529d0e","I2790","json","1","1")
-//            .enqueue(object: Callback<FoodList>{
-//                override fun onResponse(call: Call<FoodList>, response: Response<FoodList>) {
-//                    //TODO("Not yet implemented")
-//                    if (response.isSuccessful.not()){
-//                        //Log.e(TAG,"조회 실패")
-//                        return
-//                    }else{
-//                        //Log.d(TAG,response.body().toString())
-//                        response.body()?.let {
-//                            val foodName=it.list.food[0].foodName
-//                        }
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<FoodList>, t: Throwable) {
-//                    //TODO("Not yet implemented")
-//                    Log.e(TAG,"연결 실패 ㅠ")
-//                    Log.e(TAG,t.toString())
-//                }
-//
-//            })
+        naviView.setNavigationItemSelectedListener(this)
+        binding.menuBtn.setOnClickListener(View.OnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        })
     }
 
     private fun runBottomBar(){
-        bottomBar.selectTabAt(0)
+        binding.bottomBar.selectTabAt(0)
         changeFragment(TodayDietFragment)
-        bottomBar.onTabSelected={
+        binding.bottomBar.onTabSelected={
             when(it.id){
                 R.id.navi_todayBtn->{
                     changeFragment(TodayDietFragment)
@@ -61,7 +50,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        bottomBar.onTabReselected={
+        binding.bottomBar.onTabReselected={
             Log.d("bottom_bar", "Reselected tab: " + it.title)
         }
     }
@@ -76,16 +65,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        var count=supportFragmentManager.backStackEntryCount
+        val count=supportFragmentManager.backStackEntryCount
         if (count==0){
             super.onBackPressed()
         }else{
-            //supportFragmentManager.popBackStack()
             finish()
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.license_btn->{
+                changeFragment(LicenseFragment)
+                binding.drawerLayout.close()
+            }
+
+        }
+        return false
     }
 
     companion object{
         private const val TAG="MainActivity"
     }
+
 }

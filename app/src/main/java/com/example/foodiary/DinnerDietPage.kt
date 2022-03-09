@@ -57,12 +57,6 @@ class DinnerDietPage : Fragment() {
         deleteDialog.setCanceledOnTouchOutside(true)
         deleteDialog.setCancelable(true)
 
-        //val num=dViewModel.getMorningCount() //이 코드는 메인쓰레드 에러, 따라서 코루틴스코프에서 실행
-        //morningList=dViewModel.getMorningAll() //얘는 no error..? 왜??
-        /**이슈: 백그라운드 스레드에서 Observe 사용 불가!!**/
-        //그럼 num을 어떻게 갖고오지..?;
-        //Observe를 ViewModel에서 호출??
-
         liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
         liveData.observe(this.viewLifecycleOwner, Observer {
             selectedDate=it
@@ -109,12 +103,12 @@ class DinnerDietPage : Fragment() {
             }
         }
 
-        dinnerBinding.mAddBtn.setOnClickListener(View.OnClickListener {
+        dinnerBinding.mAddBtn.setOnClickListener {
             val dialog=AddDialog(context as Activity)
             dialog.lifecycleOwner=this.viewLifecycleOwner
             dialog.timeText=dinnerBinding.dinnerText.text.toString()
             dialog.showDialog()
-        })
+        }
     }
 
     fun delete(serialNum: Int)=scope.launch {

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <TextView
+            android:id="@+id/license_icon1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Icon"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/license_icon2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/license_icon1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:text="All icons are resources of Flaticon.com"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/license_opensource1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/license_icon2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"
+            android:text="Open Sources"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/license_opensource2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/license_opensource1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"
+            android:text="AnimatedBottomBar"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            tools:ignore="MissingConstraints" />
+
+        <ImageButton
+            android:id="@+id/licenseBtn1"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_recipe_foreground"
+            android:background="#00ff0000"
+            app:layout_constraintStart_toEndOf="@id/license_opensource2"
+            app:layout_constraintTop_toBottomOf="@id/license_opensource1"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/license_opensource3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/license_opensource2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"
+            android:text="https://github.com/Droppers/AnimatedBottomBar"
+            android:textColor="@color/black"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/license_opensource4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/license_opensource3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"
+            android:text="MotionToast"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            tools:ignore="MissingConstraints" />
+
+        <ImageButton
+            android:id="@+id/licenseBtn2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_recipe_foreground"
+            android:background="#00ff0000"
+            app:layout_constraintStart_toEndOf="@id/license_opensource4"
+            app:layout_constraintTop_toBottomOf="@id/license_opensource3"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/license_opensource5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/license_opensource4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="10dp"
+            android:text="https://github.com/Spikeysanju/MotionToast"
+            android:textColor="@color/black"
+            tools:ignore="MissingConstraints" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
