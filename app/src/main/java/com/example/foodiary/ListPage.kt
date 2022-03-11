@@ -24,6 +24,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import com.example.foodiary.databinding.DateListDialogBinding
 import com.example.foodiary.databinding.ListOfAllDataBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,23 +32,22 @@ import kotlinx.coroutines.launch
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ListPage : Fragment() {
     private lateinit var adapter: DateAdapter
+    private lateinit var dialogBinding: DateListDialogBinding
     private lateinit var listAdapter1: ListAdapter
     private lateinit var listAdapter2: ListAdapter
     private lateinit var listAdapter3: ListAdapter
     private lateinit var viewModel: diaryViewModel
     private var dateList= ArrayList<String>()
-    private val scope= CoroutineScope(Dispatchers.IO)
-    private lateinit var liveData: LiveData<String>
-    private lateinit var num: String
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
     private lateinit var dialog: Dialog
-    private var list=ArrayList<String>()
-    private var mfoodList=ArrayList<FoodItemInList>()
-    private var lfoodList=ArrayList<FoodItemInList>()
-    private var dfoodList=ArrayList<FoodItemInList>()
+    private val mfoodList by lazy { ArrayList<FoodItemInList>() }
+    private val lfoodList by lazy { ArrayList<FoodItemInList>() }
+    private val dfoodList by lazy { ArrayList<FoodItemInList>() }
     private lateinit var listOfbinding: ListOfAllDataBinding
     private lateinit var date: String
 
@@ -58,13 +58,10 @@ class ListPage : Fragment() {
     ): View? {
         listOfbinding=DataBindingUtil.inflate(inflater, R.layout.list_of_all_data, container,false)
         return listOfbinding.root
-        //return inflater.inflate(R.layout.list_of_all_data, container, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N) //startdraganddrop api 24 이상
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //val gridView: GridView=view.findViewById(R.id.gridView)
 
         viewModel=
             ViewModelProvider.AndroidViewModelFactory.getInstance((context as Activity).application).create(diaryViewModel::class.java)
@@ -73,17 +70,14 @@ class ListPage : Fragment() {
         listAdapter2= ListAdapter(context as Activity)
         listAdapter3= ListAdapter(context as Activity)
 
-        dialog= Dialog(context as Activity)
-        dialog.setContentView(R.layout.date_list_dialog)
+        dialog=Dialog(context as Activity)
+        dialogBinding= DateListDialogBinding.inflate(LayoutInflater.from(context))
+        dialog.setContentView(dialogBinding.root)
         dialog.window!!.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT)
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
-        val mListView: ListView =dialog.findViewById(R.id.morning_listView)
-        val lListView: ListView=dialog.findViewById(R.id.lunch_listView)
-        val dListView: ListView=dialog.findViewById(R.id.dinner_listView)
-        val deleteBtn: ImageButton=dialog.findViewById(R.id.trashBtn)
 
         dateList.clear()
 
@@ -108,14 +102,16 @@ class ListPage : Fragment() {
                     listAdapter1.removeAll()
                     it?.let {
                         for (i: Int in it.indices){
+                            Log.e(TAG,it[i].food_name)
                             if(it[i].date==selectedDate){
+                                Log.e(TAG,selectedDate)
                                 val name=it[i].food_name
                                 val calorie=it[i].food_calorie
                                 mfoodList.add(FoodItemInList(name, calorie))
                             }
                         }
                         listAdapter1.addAll(mfoodList)
-                        mListView.adapter=listAdapter1
+                        dialogBinding.morningListView.adapter=listAdapter1
                     }
                 })
                 viewModel.getLunchAll().observe(this.viewLifecycleOwner, Observer {
@@ -123,14 +119,16 @@ class ListPage : Fragment() {
                         lfoodList.clear()
                         listAdapter2.removeAll()
                         for (i: Int in it.indices){
+                            Log.e(TAG,it[i].food_name)
                             if(it[i].date==selectedDate){
+                                Log.e(TAG,selectedDate)
                                 val name=it[i].food_name
                                 val calorie=it[i].food_calorie
                                 lfoodList.add(FoodItemInList(name, calorie))
                             }
                         }
                         listAdapter2.addAll(lfoodList)
-                        lListView.adapter=listAdapter2
+                        dialogBinding.lunchListView.adapter=listAdapter2
                     }
                 })
                 viewModel.getDinnerAll().observe(this.viewLifecycleOwner, Observer {
@@ -138,20 +136,22 @@ class ListPage : Fragment() {
                         dfoodList.clear()
                         listAdapter3.removeAll()
                         for (i: Int in it.indices){
+                            Log.e(TAG,it[i].food_name)
                             if(it[i].date==selectedDate){
+                                Log.e(TAG,selectedDate)
                                 val name=it[i].food_name
                                 val calorie=it[i].food_calorie
                                 dfoodList.add(FoodItemInList(name, calorie))
                             }
                         }
                         listAdapter3.addAll(dfoodList)
-                        dListView.adapter=listAdapter3
+                        dialogBinding.dinnerListView.adapter=listAdapter3
                     }
                 })
                 dialog.show()
             }
 
-        deleteBtn.setOnClickListener{
+        dialogBinding.trashBtn.setOnClickListener{
             //날짜에 해당하는걸 다 지워야함
             deleteDate(date)
             val intent= Intent(context,MainActivity::class.java)

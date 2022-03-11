@@ -13,8 +13,8 @@ class foodViewModel: ViewModel() {
         liveData.value=data
     }
 
-    fun deleteItem(position: Int){ //인덱스로 아이템 삭제
-        data.removeAt(position)
-        liveData.value=data
-    }
+//    fun deleteItem(position: Int){ //인덱스로 아이템 삭제
+//        data.removeAt(position)
+//        liveData.value=data
+//    }
 }

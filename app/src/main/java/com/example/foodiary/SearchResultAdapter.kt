@@ -54,7 +54,6 @@ class SearchResultAdapter(val context: Context) : RecyclerView.Adapter<SearchRes
 
     fun setData(newdata:ArrayList<FoodItemInList>){
         list=newdata
-        //notifyDataSetChanged() //이거 꼭 해야되냐
     }
 
 }

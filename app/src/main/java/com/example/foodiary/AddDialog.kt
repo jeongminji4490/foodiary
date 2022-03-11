@@ -27,21 +27,19 @@ import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
 class AddDialog(private var context: Context){
-    private val dialog=Dialog(context)
-    private val adapter=SearchResultAdapter(context)
-    private val selectedAdapter=SearchResultAdapter(context)
-    private val viewModel=foodViewModel()
-    private val scope= CoroutineScope(Dispatchers.IO)
-    private lateinit var liveData: LiveData<String>
+    private val dialog by lazy { Dialog(context) }
+    private val adapter by lazy { SearchResultAdapter(context) }
+    private val selectedAdapter by lazy { SearchResultAdapter(context) }
+    private val viewModel by lazy { foodViewModel() }
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
     lateinit var lifecycleOwner: LifecycleOwner
     lateinit var timeText: String
-    private val dateApp=DateApp.getInstance()
-    private lateinit var selectedDate: String
+    private val foodService by lazy { FoodClient.foodService }
+    lateinit var selectedDate: String
     private lateinit var dViewModel: diaryViewModel
     private lateinit var dialogBinding: AddDietDialogBinding
 
     fun showDialog(){
-        //room db는 메인쓰레드에서 생성 불가
         dialogBinding= AddDietDialogBinding.inflate(LayoutInflater.from(context))
         dialog.setContentView(dialogBinding.root)
         dialog.window!!.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
@@ -50,13 +48,6 @@ class AddDialog(private var context: Context){
         dialog.setCancelable(true)
 
         dViewModel=ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application).create(diaryViewModel::class.java)
-        val foodService=FoodClient.foodService
-
-        liveData=DateApp.getInstance().getDataStore().date.asLiveData(context = Dispatchers.IO)
-        liveData.observe(lifecycleOwner, Observer {
-            selectedDate=it
-            Log.e(TAG, selectedDate)
-        })
 
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
         val serialNum: Int=0
@@ -86,7 +77,7 @@ class AddDialog(private var context: Context){
             })
         dialogBinding.searchRecyclerView.addItemDecoration(decoration)
 
-        //category spinner
+        //카테고리 스피너
         ArrayAdapter.createFromResource(
             context,
             R.array.category,
@@ -103,14 +94,12 @@ class AddDialog(private var context: Context){
             dialogBinding.searchRecyclerView.layoutManager=LinearLayoutManager(context)
         })
 
-        //recyclerview item click event
+        //아이템 삭제
         adapter.itemClick=object : SearchResultAdapter.ItemClick{
             override fun onClick(view: View, position: Int, list: ArrayList<FoodItemInList>) {
-                //Toast.makeText(context,list[position].name,Toast.LENGTH_SHORT).show()
                 val name=list[position].name
                 val calorie=list[position].calorie
                 selectedAdapter.add(FoodItemInList(name, calorie))
-                Log.e(TAG,name+calorie)
                 dialogBinding.searchSelectRecyclerView.adapter=selectedAdapter
                 dialogBinding.searchSelectRecyclerView.layoutManager=LinearLayoutManager(context)
             }
@@ -131,21 +120,17 @@ class AddDialog(private var context: Context){
 
         //save & cancel button click event
         //serial_num, 날짜, 식사시간, 카테고리, 음식이름, 칼로리 db에 저장
-        //일지 제대로 저장되는지 확인하고(ok), 메인페이지에서 리스트업하기!
         dialogBinding.dialogSaveBtn.setOnClickListener {
-            //sRecyclerView에 있는거 다 저장, 즉 selectedAdapter의 모든 아이템들을 저장해야함
             for (i: Int in 0..selectedAdapter.itemCount){
                 try {
                     val name=selectedAdapter.getName(i)
                     val calorie=selectedAdapter.getCalorie(i)
                     dateInsert(date(serialNum, selectedDate))
 
-                    if(timeText=="아침"){ //date 테이블에 selectedDate가 존재한다면 date 테이블에 삽입 금지
-                        morningInsert(morningDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
-                    }else if(timeText=="점심"){
-                        lunchInsert(lunchDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
-                    }else{
-                        dinnerInsert(dinnerDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))
+                    when(timeText){
+                        "아침"->{morningInsert(morningDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))}
+                        "점심"->{lunchInsert(lunchDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))}
+                        "저녁"->{dinnerInsert(dinnerDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))}
                     }
 
                     MotionToast.darkColorToast(

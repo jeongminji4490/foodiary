@@ -22,12 +22,10 @@ import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    //by lazy : 각 변수가 처음 사용되는 시점에서 지연 초기화
     private val TodayDietFragment by lazy { TodayDiet() }
     private val EmptyFragment by lazy { ListPage() }
     private val LicenseFragment by lazy { LicensePage() }
     private lateinit var binding: ActivityMainBinding
-    private lateinit var liveData: LiveData<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +54,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         binding.bottomBar.onTabReselected={
-            Log.d("bottom_bar", "Reselected tab: " + it.title)
+            //Log.d("bottom_bar", "Reselected tab: " + it.title)
         }
     }
 
 
-    private fun changeFragment(fragment: Fragment){
+    private fun changeFragment(fragment: Fragment){ //프래그먼트 교체
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.frameLayout,fragment)
