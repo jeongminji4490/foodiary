@@ -27,17 +27,17 @@ import java.util.*
 
 class TodayDiet : Fragment(), View.OnClickListener {
 
-    private val calendar by lazy { Calendar.getInstance() }
-    private lateinit var currentDate: Date
-    private lateinit var selectedDate : String
-    private lateinit var binding: TodaydietPageBinding
-    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
-    private lateinit var diaryAdapter1: DiaryAdapter
-    private lateinit var diaryAdapter2: DiaryAdapter
-    private lateinit var diaryAdapter3: DiaryAdapter
-    private lateinit var dViewModel: diaryViewModel
-    private lateinit var dialogBinding: DeleteDietDialogBinding
-    private var diaryList: ArrayList<DiaryItemInList> = ArrayList()
+    private val calendar by lazy { Calendar.getInstance() } //캘린더 객체
+    private lateinit var currentDate: Date //오늘 날짜
+    private lateinit var selectedDate : String //이동한 날짜
+    private lateinit var binding: TodaydietPageBinding //오늘식단 화면에 대한 바인딩 객체
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) } //coroutine scope
+    private lateinit var dViewModel: diaryViewModel //다이어리 DB를 사용하기 위한 뷰모델
+    private lateinit var diaryAdapter1: DiaryAdapter //아침식단 어댑터
+    private lateinit var diaryAdapter2: DiaryAdapter //점심식단 어댑터
+    private lateinit var diaryAdapter3: DiaryAdapter //저녁식단 어댑터
+    private lateinit var dialogBinding: DeleteDietDialogBinding //삭제 다이얼로그에 대한 바인딩 객체
+    private var diaryList: ArrayList<DiaryItemInList> = ArrayList() //다이어리 데이터를 담기 위한 ArrayList
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +51,8 @@ class TodayDiet : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        currentDate() //먼저 오늘 날짜로 초기화
-        selectedDate=currentDate.dateToString("yyyy-MM-dd")
+        currentDate() //오늘 날짜로 초기화
+        selectedDate=currentDate.dateToString("yyyy-MM-dd") //해당 형식으로 date 객체를 문자열로 변환
         binding.todayDateText.text=selectedDate
 
         diaryAdapter1= DiaryAdapter(context as Activity)
@@ -61,7 +61,8 @@ class TodayDiet : Fragment(), View.OnClickListener {
 
         dViewModel=
             ViewModelProvider.AndroidViewModelFactory.getInstance((context as Activity).application).create(diaryViewModel::class.java)
-        //delete dialog
+
+        //삭제 다이얼로그
         val deleteDialog= Dialog(context as Activity)
         deleteDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         deleteDialog.window?.requestFeature(Window.FEATURE_NO_TITLE)
@@ -74,13 +75,14 @@ class TodayDiet : Fragment(), View.OnClickListener {
         deleteDialog.setCancelable(true)
         tab()
 
+        //각 버튼에 대한 이벤트 리스너 등록
         binding.dateLeftBtn.setOnClickListener(this)
         binding.dateRightBtn.setOnClickListener(this)
         binding.mAddBtn.setOnClickListener(this)
         binding.lAddBtn.setOnClickListener(this)
         binding.dAddBtn.setOnClickListener(this)
 
-        //삭제 다이얼로그
+        //아침식단 리스트의 아이템 클릭 시 삭제 다이얼로그 호출
         diaryAdapter1.itemClick=object : DiaryAdapter.ItemClick{
             override fun onClick(view: View, position: Int, list: ArrayList<DiaryItemInList>) {
                 deleteDialog.show()
@@ -95,7 +97,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
             }
         }
 
-        //삭제 다이얼로그
+        //점심식단 리스트의 아이템 클릭 시 삭제 다이얼로그 호출
         diaryAdapter2.itemClick=object : DiaryAdapter.ItemClick{
             override fun onClick(v: View, position: Int, list: ArrayList<DiaryItemInList>) {
                 deleteDialog.show()
@@ -110,7 +112,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
             }
         }
 
-        //삭제 다이얼로그
+        //저녁식단 리스트의 아이템 클릭 시 삭제 다이얼로그 호출
         diaryAdapter3.itemClick=object : DiaryAdapter.ItemClick{
             override fun onClick(view: View, position: Int, list: ArrayList<DiaryItemInList>) {
                 deleteDialog.show()
@@ -127,6 +129,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
 
     }
 
+    //날짜에 따라 데이터 리스트업
     fun tab(){
         //아침
         diaryAdapter1.removeAll()
@@ -134,7 +137,6 @@ class TodayDiet : Fragment(), View.OnClickListener {
             it?.let {
                 diaryList.clear()
                 for (i: Int in it.indices){
-                    Log.e("순서2", selectedDate)
                     if(it[i].date==selectedDate){
                         val serialNum=it[i].serialNum
                         val category=it[i].category
@@ -202,6 +204,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
         })
     }
 
+    //time(아침/점심/저녁)에 따라 각 테이블에서 삭제
     fun delete(serialNum: Int, time: String)=scope.launch {
         when(time){
             "m"->{dViewModel.morningDelete(serialNum)}
@@ -210,6 +213,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
         }
     }
 
+    //date 객체를 문자열로 변환
     fun Date.dateToString(format: String, local: Locale=Locale.getDefault()): String{
         val formatter=SimpleDateFormat(format, local)
         return formatter.format(this)
@@ -220,19 +224,21 @@ class TodayDiet : Fragment(), View.OnClickListener {
         calendar.time=currentDate
     }
 
+    //각 버튼 클릭 시 발생하는 이벤트
     override fun onClick(v: View) {
         when(v.id){
+            //추가 다이얼로그 호출
             R.id.m_add_btn->{callDialog(binding.morningText.text.toString())}
             R.id.l_add_btn->{callDialog(binding.lunchText.text.toString())}
             R.id.d_add_btn->{callDialog(binding.dinnerText.text.toString())}
-            R.id.date_leftBtn->{
+            R.id.date_leftBtn->{ //이전 날짜로 이동
                 calendar.add(Calendar.DATE,-1)
                 currentDate=calendar.time
                 selectedDate=currentDate.dateToString("yyyy-MM-dd")
                 binding.todayDateText.text=selectedDate
                 tab()
             }
-            R.id.date_rightBtn->{
+            R.id.date_rightBtn->{ //다음 날짜로 이동
                 calendar.add(Calendar.DATE,1)
                 currentDate=calendar.time
                 selectedDate=currentDate.dateToString("yyyy-MM-dd")
@@ -242,6 +248,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
         }
     }
 
+    //추가 다이얼로그 호출
     fun callDialog(text: String){
         val dialog=AddDialog(context as Activity)
         dialog.lifecycleOwner=this.viewLifecycleOwner

@@ -2,6 +2,7 @@ package com.example.foodiary
 
 import com.google.gson.annotations.SerializedName
 
+//응답받을 객체 정의
 data class FoodList(
     @SerializedName("I2790") val list:FoodDto
 )

@@ -8,8 +8,6 @@ class DiaryRepository(application: Application) {
     private val db=DiaryDatabase.getInstance(application)!! //메인쓰레드에서 접근 불가
     private val dao: DiaryDao=db.DiaryDao()
 
-    //private val diaries: List<Diary> = dao.getAll()
-
     fun getMorningAll(): LiveData<List<morningDiary>> {
         return dao.getMoringAll()
     }

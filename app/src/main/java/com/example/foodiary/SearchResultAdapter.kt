@@ -6,23 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.foodiary.databinding.FoodItemBinding
 
 class SearchResultAdapter(val context: Context) : RecyclerView.Adapter<SearchResultAdapter.Holder>() {
     var list=ArrayList<FoodItemInList>()
-    interface ItemClick{
+    interface ItemClick{ //recyclerview내의 아이템 클릭 이벤트
         fun onClick(view: View, position: Int, list: ArrayList<FoodItemInList>)
     }
     var itemClick: ItemClick?=null
+    private lateinit var binding: FoodItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view= LayoutInflater.from(context).inflate(R.layout.food_item, parent, false)
-        return Holder(view)
+        val inflater=LayoutInflater.from(context)
+        binding= DataBindingUtil.inflate(inflater,R.layout.food_item,parent,false)
+        return Holder(binding.root)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) { //item binding
-        holder.name.text=list[position].name
-        holder.calorie.text=list[position].calorie
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.onBind(list[position])
 
         if (itemClick!=null){
             holder.view.setOnClickListener{ v->
@@ -48,8 +51,9 @@ class SearchResultAdapter(val context: Context) : RecyclerView.Adapter<SearchRes
     }
 
     inner class Holder(val view: View) : RecyclerView.ViewHolder(view){
-        val name: TextView=view.findViewById(R.id.food_name)
-        val calorie: TextView=view.findViewById(R.id.food_calorie)
+        fun onBind(data: FoodItemInList){
+            binding.food=data
+        }
     }
 
     fun setData(newdata:ArrayList<FoodItemInList>){

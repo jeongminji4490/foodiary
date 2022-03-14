@@ -6,8 +6,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object FoodClient { //Singleton
-    val okHttpClient= OkHttpClient.Builder()
+object FoodClient { //싱글톤
+
+    //서버 요청시간 정의의
+   val okHttpClient= OkHttpClient.Builder()
         .connectTimeout(120, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
         .writeTimeout(120, TimeUnit.SECONDS)

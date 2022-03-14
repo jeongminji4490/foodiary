@@ -27,17 +27,17 @@ import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
 class AddDialog(private var context: Context){
-    private val dialog by lazy { Dialog(context) }
-    private val adapter by lazy { SearchResultAdapter(context) }
-    private val selectedAdapter by lazy { SearchResultAdapter(context) }
-    private val viewModel by lazy { foodViewModel() }
-    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
-    lateinit var lifecycleOwner: LifecycleOwner
+    private val dialog by lazy { Dialog(context) } //다이얼로그 객체
+    private val adapter by lazy { SearchResultAdapter(context) } //음식 리스트 어댑터
+    private val selectedAdapter by lazy { SearchResultAdapter(context) } //음식 선택 결과 어댑터
+    private val viewModel by lazy { foodViewModel() } //API 통신 결과를 실시간으로 반영하기 위한 뷰모델
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) } //coroutine scope
+    lateinit var lifecycleOwner: LifecycleOwner //TodayDiet의 생명주기
     lateinit var timeText: String
     private val foodService by lazy { FoodClient.foodService }
-    lateinit var selectedDate: String
-    private lateinit var dViewModel: diaryViewModel
-    private lateinit var dialogBinding: AddDietDialogBinding
+    lateinit var selectedDate: String //선택된 날짜
+    private lateinit var dViewModel: diaryViewModel //다이어리 DB를 사용하기 위한 다이어리 뷰모델
+    private lateinit var dialogBinding: AddDietDialogBinding //추가 다이얼로그에 대한 바인딩 객체
 
     fun showDialog(){
         dialogBinding= AddDietDialogBinding.inflate(LayoutInflater.from(context))
@@ -52,19 +52,20 @@ class AddDialog(private var context: Context){
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
         val serialNum: Int=0
 
+        //API 통신
         foodService.getFoodName("af2bd97db6b846529d0e","I2790","json")
             .enqueue(object: Callback<FoodList> {
                 override fun onResponse(call: Call<FoodList>, response: Response<FoodList>) {
                     if (response.isSuccessful.not()){
                         Log.e(TAG,"조회 실패")
                         return
-                    }else{
+                    }else{ //조회에 성공했다면
                         response.body()?.let {
-                            dialogBinding.loadingText.visibility=View.GONE
-                            for (i: Int in 0..999){
-                                val name=it.list.food[i].foodName
-                                val kcal=it.list.food[i].kcal
-                                viewModel.addItem(FoodItemInList(name, kcal))
+                            dialogBinding.loadingText.visibility=View.GONE //"로딩중" 텍스트 unvisible
+                            for (i: Int in 0..999){ //응답받은 데이터들 중 1000개의 데이터에 대해
+                                val name=it.list.food[i].foodName //음식명
+                                val kcal=it.list.food[i].kcal //1회 제공량당 kcal
+                                viewModel.addItem(FoodItemInList(name, kcal)) //뷰모델에 추가
                             }
                         }
                     }
@@ -75,7 +76,7 @@ class AddDialog(private var context: Context){
                 }
 
             })
-        dialogBinding.searchRecyclerView.addItemDecoration(decoration)
+        dialogBinding.searchRecyclerView.addItemDecoration(decoration) //recyclerview 아이템 사이에 줄 표시
 
         //카테고리 스피너
         ArrayAdapter.createFromResource(
@@ -87,7 +88,8 @@ class AddDialog(private var context: Context){
             dialogBinding.categorySpinner.adapter=arrayAdapter
         }
 
-        //UI 실시간 업데이트
+        //viewmodel에 데이터가 추가될 때마다 searchRecyclerView 실시간 업데이트
+        //livedata는 todaydiet의 생명주기에 따라 행동
         viewModel.liveData.observe(lifecycleOwner, Observer {
             adapter.setData(it)
             dialogBinding.searchRecyclerView.adapter=adapter
@@ -107,7 +109,7 @@ class AddDialog(private var context: Context){
 
         //직접 입력한 데이터 추가
         dialogBinding.directInputBtn.setOnClickListener {
-            if (dialogBinding.directNameEdit.text.toString().isEmpty()) { //식품명이 비어있다면(칼로리는 안적어도됨!){
+            if (dialogBinding.directNameEdit.text.toString().isEmpty()) { //식품명이 비어있다면{
                 Toast.makeText(context,"식품명을 적어주세요",Toast.LENGTH_SHORT).show()
             }else{
                 selectedAdapter.add(FoodItemInList(dialogBinding.directNameEdit.text.toString(),dialogBinding.directCalorieEdit.text.toString()))
@@ -118,7 +120,7 @@ class AddDialog(private var context: Context){
 
         dialog.show()
 
-        //save & cancel button click event
+        //save & cancel 버튼 클릭 이벤트
         //serial_num, 날짜, 식사시간, 카테고리, 음식이름, 칼로리 db에 저장
         dialogBinding.dialogSaveBtn.setOnClickListener {
             for (i: Int in 0..selectedAdapter.itemCount){
@@ -132,7 +134,6 @@ class AddDialog(private var context: Context){
                         "점심"->{lunchInsert(lunchDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))}
                         "저녁"->{dinnerInsert(dinnerDiary(serialNum, selectedDate,dialogBinding.categorySpinner.selectedItem.toString(),name,calorie))}
                     }
-
                     MotionToast.darkColorToast(
                         context as Activity,
                         "완료",
@@ -143,17 +144,15 @@ class AddDialog(private var context: Context){
                         ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
                     )
                 }catch (e: IndexOutOfBoundsException){
-                    Log.e(TAG,"IndexOutOfBouncsException") //이부분 오류발생, 근데 저장은 잘 됨...
+                    Log.e(TAG,"IndexOutOfBouncsException")
                 }
             }
             val intent= Intent(context,MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             dialog.dismiss()
-            context.startActivity(intent)
+            context.startActivity(intent) //다이얼로그 종료 후 메인화면으로 아동
         }
-        dialogBinding.dialogCancelBtn.setOnClickListener(View.OnClickListener {
-            dialog.dismiss()
-        })
+        dialogBinding.dialogCancelBtn.setOnClickListener { dialog.dismiss() }
     }
 
     fun morningInsert(diary: morningDiary)=scope.launch {

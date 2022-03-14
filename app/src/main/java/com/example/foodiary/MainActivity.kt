@@ -22,24 +22,24 @@ import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val TodayDietFragment by lazy { TodayDiet() }
-    private val EmptyFragment by lazy { ListPage() }
-    private val LicenseFragment by lazy { LicensePage() }
-    private lateinit var binding: ActivityMainBinding
+    private val TodayDietFragment by lazy { TodayDiet() } //식단
+    private val ListFragment by lazy { ListPage() } //모든 식단 모아보기
+    private val LicenseFragment by lazy { LicensePage() } //저작권 페이지
+    private lateinit var binding: ActivityMainBinding //메인화면에 대한 데이터바인딩 객체
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=DataBindingUtil.setContentView(this,R.layout.activity_main)
 
-        val naviView: NavigationView=findViewById(R.id.navi_view)
+        val naviView: NavigationView=findViewById(R.id.navi_view) //내비게이션뷰
 
         runBottomBar()
         naviView.setNavigationItemSelectedListener(this)
-        binding.menuBtn.setOnClickListener(View.OnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        })
+        //메뉴버튼 클릭 시 드로어 오픈
+        binding.menuBtn.setOnClickListener { binding.drawerLayout.openDrawer(GravityCompat.START) }
     }
 
+    //AnimatedBottomBar 클릭 시 프래그먼트 교체
     private fun runBottomBar(){
         binding.bottomBar.selectTabAt(0)
         changeFragment(TodayDietFragment)
@@ -49,25 +49,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     changeFragment(TodayDietFragment)
                 }
                 R.id.navi_allBtn->{
-                    changeFragment(EmptyFragment)
+                    changeFragment(ListFragment)
                 }
             }
         }
-        binding.bottomBar.onTabReselected={
-            //Log.d("bottom_bar", "Reselected tab: " + it.title)
-        }
+        binding.bottomBar.onTabReselected={ }
     }
 
 
     private fun changeFragment(fragment: Fragment){ //프래그먼트 교체
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.frameLayout,fragment)
+            .replace(R.id.frameLayout,fragment) //프래그먼트에 해당하는 화면으로 프레임 레이아웃 교체
             .addToBackStack(null)
             .commit()
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed() { //뒤로가기 버튼 클릭 시 종료
         val count=supportFragmentManager.backStackEntryCount
         if (count==0){
             super.onBackPressed()
@@ -76,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    override fun onNavigationItemSelected(item: MenuItem): Boolean { //저작권 버튼 클릭 시 저작권 페이지로 이동
         when(item.itemId){
             R.id.license_btn->{
                 changeFragment(LicenseFragment)

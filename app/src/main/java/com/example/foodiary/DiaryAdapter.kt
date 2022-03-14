@@ -17,12 +17,13 @@ import com.example.foodiary.databinding.MainpageSnackItemBinding
 
 class DiaryAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var list=ArrayList<DiaryItemInList>()
-    val MEAL: Int=0
-    val SNACK: Int=1
+    //각 뷰타입에 대해 다른 뷰 리턴
+    val MEAL: Int=0 //식사 뷰 리턴
+    val SNACK: Int=1 //간식 뷰 리턴
     private lateinit var mealBinding: MainpageItemBinding
     private lateinit var snackBinding: MainpageSnackItemBinding
 
-    interface ItemClick{
+    interface ItemClick{ //recyclerview 내의 아이템 클릭 이벤트
         fun onClick(view: View, position: Int, list: ArrayList<DiaryItemInList>)
     }
     var itemClick: ItemClick?=null
@@ -88,7 +89,7 @@ class DiaryAdapter(val context: Context) : RecyclerView.Adapter<RecyclerView.Vie
     }
 }
 
-class DateAdapter(val context: Context): BaseAdapter() {
+class DateAdapter(val context: Context): BaseAdapter() { //일정 어댑터
     val list=ArrayList<String>()
 
     override fun getCount(): Int { return list.size }
@@ -110,7 +111,7 @@ class DateAdapter(val context: Context): BaseAdapter() {
     fun addAll(data: List<String>){ list.addAll(data) }
 }
 
-class ListAdapter(val context: Context): BaseAdapter(){
+class ListAdapter(val context: Context): BaseAdapter(){ //음식+칼로리 어댑터
     private val list=ArrayList<FoodItemInList>()
     override fun getCount(): Int { return list.size }
 

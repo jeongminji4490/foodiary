@@ -6,6 +6,7 @@ import androidx.room.*
 @Dao
 interface DiaryDao {
 
+    /**다이어리 DB에 대한 인터페이스**/
     //Room이 이미 MutableLiveData를 반환하는 특정 @Query에 대한 백그라운드 스레드를 사용하기 때문에 MutableLiveData를 리턴하는 메소드에는 따로 suspend를 추가하지 않아도 됨
     @Query("Select * From morning")
     fun getMoringAll(): LiveData<List<morningDiary>>
@@ -51,6 +52,4 @@ interface DiaryDao {
 
     @Query("DELETE FROM dinner WHERE date = :date")
     suspend fun deleteDdate(date: String)
-
-
 }

@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 
 class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository= DiaryRepository(application)
-    //private val diaries=repository.getAll()
 
     fun getMorningAll(): LiveData<List<morningDiary>> {
         return repository.getMorningAll()

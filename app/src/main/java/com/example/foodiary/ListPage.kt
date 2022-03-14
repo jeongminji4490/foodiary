@@ -36,19 +36,19 @@ import kotlin.collections.ArrayList
 
 
 class ListPage : Fragment() {
-    private lateinit var adapter: DateAdapter
-    private lateinit var dialogBinding: DateListDialogBinding
-    private lateinit var listAdapter1: ListAdapter
-    private lateinit var listAdapter2: ListAdapter
-    private lateinit var listAdapter3: ListAdapter
-    private lateinit var viewModel: diaryViewModel
-    private var dateList= ArrayList<String>()
-    private val scope by lazy { CoroutineScope(Dispatchers.IO) }
+    private lateinit var adapter: DateAdapter //일정 어댑터
+    private lateinit var dialogBinding: DateListDialogBinding //식단목록에 대한 바인딩 객체
+    private lateinit var viewModel: diaryViewModel //다이어리 DB를 사용하기 위한 뷰모델
+    private var dateList= ArrayList<String>() //일정(문자열)을 저장하기 위한 ArrayList
+    private val scope by lazy { CoroutineScope(Dispatchers.IO) } //coroutine scope
     private lateinit var dialog: Dialog
-    private val mfoodList by lazy { ArrayList<FoodItemInList>() }
-    private val lfoodList by lazy { ArrayList<FoodItemInList>() }
-    private val dfoodList by lazy { ArrayList<FoodItemInList>() }
-    private lateinit var listOfbinding: ListOfAllDataBinding
+    private lateinit var listAdapter1: ListAdapter //아침식단 어댑터
+    private lateinit var listAdapter2: ListAdapter //점심식단 어댑터
+    private lateinit var listAdapter3: ListAdapter //저녁식단 어댑터
+    private val mfoodList by lazy { ArrayList<FoodItemInList>() } //아침식단 ArrayList
+    private val lfoodList by lazy { ArrayList<FoodItemInList>() } //점심식단 ArrayList
+    private val dfoodList by lazy { ArrayList<FoodItemInList>() } //저녁식단 ArrayList
+    private lateinit var listOfbinding: ListOfAllDataBinding //모아보기 화면에 대한 바인딩 객체
     private lateinit var date: String
 
     override fun onCreateView(
@@ -84,16 +84,16 @@ class ListPage : Fragment() {
         viewModel.getDateAll().observe(this.viewLifecycleOwner, Observer {
             it?.let {
                 for (i: Int in it.indices){
-                    //날짜 저장하는 데이터베이스 생성
                     val date=it[i].date
                     dateList.add(date)
                 }
-                dateList.sort()
+                dateList.sort() //이른 순대로 날짜 정렬
                 adapter.addAll(dateList)
                 listOfbinding.gridView.adapter=adapter
             }
         })
 
+        //그리드뷰의 각 아이템 클릭 시 해당 날짜에 대한 아침/점심/저녁 식단을 보여주는 다이얼로그 호출
         listOfbinding.gridView.onItemClickListener = OnItemClickListener { a_parent, a_view, a_position, a_id ->
                 val selectedDate=adapter.getItem(a_position)
                 date= selectedDate as String
@@ -151,8 +151,8 @@ class ListPage : Fragment() {
                 dialog.show()
             }
 
+        //클릭한 날짜에 해당하는 모든 식단을 삭제
         dialogBinding.trashBtn.setOnClickListener{
-            //날짜에 해당하는걸 다 지워야함
             deleteDate(date)
             val intent= Intent(context,MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -166,7 +166,7 @@ class ListPage : Fragment() {
                 MotionToast.LONG_DURATION,
                 ResourcesCompat.getFont(context as Activity, www.sanju.motiontoast.R.font.helvetica_regular)
             )
-            startActivity(intent)
+            startActivity(intent) //메인화면으로 이동
         }
     }
 
