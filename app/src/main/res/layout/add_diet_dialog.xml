@@ -14,6 +14,7 @@
             android:layout_width="0dp"
             android:layout_height="22sp"
             android:layout_margin="5dp"
+            android:theme="@style/mySpinnerItemStyle"
             android:background="@drawable/spinner_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +40,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="음식"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_text"
             app:layout_constraintEnd_toStartOf="@id/calorie_tx"
@@ -51,7 +51,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="열량(kcal)(1회제공량당)"
-            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/food_tx"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_text"
@@ -107,6 +106,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/directCalorie_Edit"
             android:hint="음식명"
+            android:textColorHint="@color/black"
             tools:ignore="MissingConstraints" />
 
         <EditText
@@ -119,6 +119,7 @@
             app:layout_constraintStart_toEndOf="@id/directName_Edit"
             app:layout_constraintEnd_toStartOf="@id/directInput_Btn"
             android:hint="kcal"
+            android:textColorHint="@color/black"
             tools:ignore="MissingConstraints" />
 
         <Button

@@ -112,31 +112,24 @@ class DateAdapter(val context: Context): BaseAdapter() {
 
 class ListAdapter(val context: Context): BaseAdapter(){
     private val list=ArrayList<FoodItemInList>()
-    private lateinit var binding : FoodItemBinding
     override fun getCount(): Int { return list.size }
 
     override fun getItem(p0: Int): Any { return list[p0] }
 
     override fun getItemId(p0: Int): Long { return p0.toLong()}
 
+    @SuppressLint("ViewHolder")
     override fun getView(p0: Int, p1: View?, parent: ViewGroup?): View {
         val inflater=LayoutInflater.from(context)
-        //val view=inflater.inflate(R.layout.food_item,p2,false)
-        binding=DataBindingUtil.inflate(inflater, R.layout.food_item, parent, false)
-        //val name: TextView=view.findViewById(R.id.food_name)
-        //val calorie: TextView=view.findViewById(R.id.food_calorie)
-        //name.text=list[p0].name
-        //calorie.text=list[p0].calorie
-        return binding.root
+        val view=inflater.inflate(R.layout.food_item,parent,false)
+        val name: TextView=view.findViewById(R.id.food_name)
+        val calorie: TextView=view.findViewById(R.id.food_calorie)
+        name.text=list[p0].name
+        calorie.text=list[p0].calorie
+        return view
     }
 
-    fun add(data: FoodItemInList){
-        binding.food=data
-    }
-
-    fun addAll(data: ArrayList<FoodItemInList>){
-    list.addAll(data)
-    }
+    fun addAll(data: ArrayList<FoodItemInList>){ list.addAll(data) }
 
     fun removeAll(){
         list.clear()
