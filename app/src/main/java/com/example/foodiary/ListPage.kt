@@ -29,6 +29,7 @@ import com.example.foodiary.databinding.ListOfAllDataBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 import java.util.*
@@ -38,7 +39,7 @@ import kotlin.collections.ArrayList
 class ListPage : Fragment() {
     private lateinit var adapter: DateAdapter //일정 어댑터
     private lateinit var dialogBinding: DateListDialogBinding //식단목록에 대한 바인딩 객체
-    private lateinit var viewModel: diaryViewModel //다이어리 DB를 사용하기 위한 뷰모델
+    private val viewModel: diaryViewModel by inject()
     private var dateList= ArrayList<String>() //일정(문자열)을 저장하기 위한 ArrayList
     private val scope by lazy { CoroutineScope(Dispatchers.IO) } //coroutine scope
     private lateinit var dialog: Dialog
@@ -63,8 +64,6 @@ class ListPage : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel=
-            ViewModelProvider.AndroidViewModelFactory.getInstance((context as Activity).application).create(diaryViewModel::class.java)
         adapter= DateAdapter(context as Activity)
         listAdapter1= ListAdapter(context as Activity)
         listAdapter2= ListAdapter(context as Activity)

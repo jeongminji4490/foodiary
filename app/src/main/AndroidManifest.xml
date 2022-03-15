@@ -11,6 +11,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
+        android:name=".App"
         android:theme="@style/Theme.Foodiary">
         <activity
             android:name=".MainActivity"

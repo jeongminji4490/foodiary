@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 
 object FoodClient { //싱글톤
 
-    //서버 요청시간 정의의
+    //서버 요청시간 정의
    val okHttpClient= OkHttpClient.Builder()
         .connectTimeout(120, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)

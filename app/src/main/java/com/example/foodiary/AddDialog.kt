@@ -20,13 +20,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable.start
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.java.KoinJavaComponent.get
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 
-class AddDialog(private var context: Context){
+class AddDialog(private var context: Context) : KoinComponent{
     private val dialog by lazy { Dialog(context) } //다이얼로그 객체
     private val adapter by lazy { SearchResultAdapter(context) } //음식 리스트 어댑터
     private val selectedAdapter by lazy { SearchResultAdapter(context) } //음식 선택 결과 어댑터
@@ -52,7 +54,7 @@ class AddDialog(private var context: Context){
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
         val serialNum: Int=0
 
-        //API 통신
+        //서버 통신
         foodService.getFoodName("af2bd97db6b846529d0e","I2790","json")
             .enqueue(object: Callback<FoodList> {
                 override fun onResponse(call: Call<FoodList>, response: Response<FoodList>) {
