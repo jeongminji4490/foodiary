@@ -1,60 +1,75 @@
 package com.example.foodiary
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
+import kotlinx.coroutines.CoroutineScope
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository= DiaryRepository(application)
+    private val scope by lazy { viewModelScope }
+    private var mList = repository.getMorningAll()
+    private var lList = repository.getLunchAll()
+    private var dList = repository.getDinnerAll()
+    private var dateList = repository.getDateAll()
+    private var foodList: FoodList?=null
 
-    fun getMorningAll(): LiveData<List<morningDiary>> {
-        return repository.getMorningAll()
+    //UI관련 데이터들은 뷰모델에서 관리
+    //LiveData -> MutableLiveData로 수정(livedata는 추상클래스라 객체생성 불가)
+    //상단의 리스트에 데이터들을 저장하고, 상단의 리스트들을 리턴하기!
+    //insert, delete 코루틴 스코프내에서
+
+    init {
+        foodList=repository.bodyFromRetrofit()
+        Log.e("TAG", "init")
     }
 
-    fun getLunchAll(): LiveData<List<lunchDiary>>{
-        return repository.getLunchAll()
-    }
+    fun getMorningAll(): LiveData<List<morningDiary>> = mList
 
-    fun getDinnerAll(): LiveData<List<dinnerDiary>>{
-        return repository.getDinnerAll()
-    }
+    fun getLunchAll(): LiveData<List<lunchDiary>> = lList
 
-    fun getDateAll(): LiveData<List<date>>{
-        return repository.getDateAll()
-    }
+    fun getDinnerAll(): LiveData<List<dinnerDiary>> = dList
 
-    suspend fun dateInsert(date: date){
-        repository.dateInsert(date)
-    }
+    fun getDateAll(): LiveData<List<date>> = dateList
 
-    suspend fun dateDelete(date: String){
-        repository.dateDelete(date)
-    }
+    fun getFoodList(): FoodList? = foodList
 
-    suspend fun deleteAll(date: String){
-        repository.AllDateDelete(date)
-    }
-
-    suspend fun morningInsert(diary: morningDiary){
+    fun morningInsert(diary: morningDiary) = scope.launch{
         repository.morningInsert(diary)
     }
 
-    suspend fun lunchInsert(diary: lunchDiary){
+    fun lunchInsert(diary: lunchDiary) = scope.launch{
         repository.lunchInsert(diary)
     }
 
-    suspend fun dinnerInsert(diary: dinnerDiary){
+    fun dinnerInsert(diary: dinnerDiary) = scope.launch {
         repository.dinnerInsert(diary)
     }
 
-    suspend fun morningDelete(serialNum: Int){
+    fun dateInsert(date: date) = scope.launch{
+        repository.dateInsert(date)
+    }
+
+    fun morningDelete(serialNum: Int) = scope.launch{
         repository.morningDelete(serialNum)
     }
 
-    suspend fun lunchDelete(serialNum: Int){
+    fun lunchDelete(serialNum: Int) = scope.launch{
         repository.lunchDelete(serialNum)
     }
 
-    suspend fun dinnerDelete(serialNum: Int){
+    fun dinnerDelete(serialNum: Int) = scope.launch{
         repository.dinnerDelete(serialNum)
+    }
+
+    fun dateDelete(date: String) = scope.launch{
+        repository.dateDelete(date)
+    }
+
+    fun deleteAll(date: String) = scope.launch{
+        repository.AllDateDelete(date)
     }
 }

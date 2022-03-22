@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit
 object FoodClient { //싱글톤
 
     //서버 요청시간 정의
+    //koin 사용하여 의존성 주입
    val okHttpClient= OkHttpClient.Builder()
         .connectTimeout(120, TimeUnit.SECONDS)
         .readTimeout(120, TimeUnit.SECONDS)
@@ -23,5 +24,6 @@ object FoodClient { //싱글톤
         .client(okHttpClient)
         .build()
 
-    val foodService=retrofit.create(FoodService::class.java) //retrofit 객체 생성
+    //val foodService=retrofit.create(FoodService::class.java) //retrofit 객체 생성
+    val foodService : FoodService by lazy { retrofit.create(FoodService::class.java) }
 }

@@ -170,10 +170,8 @@ class ListPage : Fragment() {
     }
 
     fun deleteDate(date: String){
-        scope.launch {
-            viewModel.deleteAll(date)
-            viewModel.dateDelete(date)
-        }
+        viewModel.deleteAll(date)
+        viewModel.dateDelete(date)
     }
     companion object{
         const val TAG="ListPage"
