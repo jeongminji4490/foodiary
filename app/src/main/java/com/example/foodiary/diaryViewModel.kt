@@ -1,11 +1,8 @@
 package com.example.foodiary
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import kotlinx.coroutines.CoroutineScope
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class diaryViewModel(application: Application) : AndroidViewModel(application) {
@@ -15,18 +12,11 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private var lList = repository.getLunchAll()
     private var dList = repository.getDinnerAll()
     private var dateList = repository.getDateAll()
-    private var foodList: FoodList?=null
 
     //UI관련 데이터들은 뷰모델에서 관리
     //LiveData -> MutableLiveData로 수정(livedata는 추상클래스라 객체생성 불가)
     //상단의 리스트에 데이터들을 저장하고, 상단의 리스트들을 리턴하기!
     //insert, delete 코루틴 스코프내에서
-
-    init {
-        foodList=repository.bodyFromRetrofit()
-        Log.e("TAG", "init")
-    }
-
     fun getMorningAll(): LiveData<List<morningDiary>> = mList
 
     fun getLunchAll(): LiveData<List<lunchDiary>> = lList
@@ -34,8 +24,6 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
     fun getDinnerAll(): LiveData<List<dinnerDiary>> = dList
 
     fun getDateAll(): LiveData<List<date>> = dateList
-
-    fun getFoodList(): FoodList? = foodList
 
     fun morningInsert(diary: morningDiary) = scope.launch{
         repository.morningInsert(diary)

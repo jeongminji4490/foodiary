@@ -14,14 +14,9 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.foodiary.FoodClient.foodService
 import com.example.foodiary.databinding.AddDietDialogBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.NonCancellable.start
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.java.KoinJavaComponent.get
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,11 +28,8 @@ class AddDialog(private var context: Context) : KoinComponent{
     private val adapter by lazy { SearchResultAdapter(context) } //음식 리스트 어댑터
     private val selectedAdapter by lazy { SearchResultAdapter(context) } //음식 선택 결과 어댑터
     private val viewModel by lazy { foodViewModel() } //API 통신 결과를 실시간으로 반영하기 위한 뷰모델
-    //private val scope by lazy { CoroutineScope(Dispatchers.IO) } //coroutine scope
     lateinit var lifecycleOwner: LifecycleOwner //TodayDiet의 생명주기
     lateinit var timeText: String
-    //private val foodService by lazy { FoodClient.foodService }
-    //private lateinit var foodList: FoodList
     lateinit var selectedDate: String //선택된 날짜
     private lateinit var dViewModel: diaryViewModel //다이어리 DB를 사용하기 위한 다이어리 뷰모델
     private lateinit var dialogBinding: AddDietDialogBinding //추가 다이얼로그에 대한 바인딩 객체
@@ -55,42 +47,30 @@ class AddDialog(private var context: Context) : KoinComponent{
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
         val serialNum: Int=0
 
-        Log.e(TAG, dViewModel.getFoodList().toString()) // -> 서버와의 통신이 완료될때까지 기다려야함
-        dViewModel.getFoodList()?.let {
-            Log.e(TAG, "in getFoodList")
-            dialogBinding.loadingText.visibility=View.GONE //"로딩중" 텍스트 unvisible
-            for (i: Int in 0..999){ //응답받은 데이터들 중 1000개의 데이터에 대해
-                val name=it.list.food[i].foodName //음식명
-                Log.e(TAG, name)
-                val kcal=it.list.food[i].kcal //1회 제공량당 kcal
-                viewModel.addItem(FoodItemInList(name, kcal)) //뷰모델에 추가
-            }
-        }
+        //서버 통신
+        foodService.getFoodName("af2bd97db6b846529d0e","I2790","json")
+            .enqueue(object: Callback<FoodList> {
+                override fun onResponse(call: Call<FoodList>, response: Response<FoodList>) {
+                    if (response.isSuccessful.not()){
+                        Log.e(TAG,"조회 실패")
+                        return
+                    }else{ //조회에 성공했다면
+                        response.body()?.let {
+                            dialogBinding.loadingText.visibility=View.GONE //"로딩중" 텍스트 unvisible
+                            for (i: Int in 0..999){ //응답받은 데이터들 중 1000개의 데이터에 대해
+                                val name=it.list.food[i].foodName //음식명
+                                val kcal=it.list.food[i].kcal //1회 제공량당 kcal
+                                viewModel.addItem(FoodItemInList(name, kcal)) //뷰모델에 추가
+                            }
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<FoodList>, t: Throwable) {
+                    Log.e(TAG,"연결 실패 ㅠ")
+                    Log.e(TAG,t.toString())
+                }
 
-//        //서버 통신
-//        foodService.getFoodName("af2bd97db6b846529d0e","I2790","json")
-//            .enqueue(object: Callback<FoodList> {
-//                override fun onResponse(call: Call<FoodList>, response: Response<FoodList>) {
-//                    if (response.isSuccessful.not()){
-//                        Log.e(TAG,"조회 실패")
-//                        return
-//                    }else{ //조회에 성공했다면
-//                        response.body()?.let {
-//                            dialogBinding.loadingText.visibility=View.GONE //"로딩중" 텍스트 unvisible
-//                            for (i: Int in 0..999){ //응답받은 데이터들 중 1000개의 데이터에 대해
-//                                val name=it.list.food[i].foodName //음식명
-//                                val kcal=it.list.food[i].kcal //1회 제공량당 kcal
-//                                viewModel.addItem(FoodItemInList(name, kcal)) //뷰모델에 추가
-//                            }
-//                        }
-//                    }
-//                }
-//                override fun onFailure(call: Call<FoodList>, t: Throwable) {
-//                    Log.e(TAG,"연결 실패 ㅠ")
-//                    Log.e(TAG,t.toString())
-//                }
-//
-//            })
+            })
         dialogBinding.searchRecyclerView.addItemDecoration(decoration) //recyclerview 아이템 사이에 줄 표시
 
         //카테고리 스피너

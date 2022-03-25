@@ -2,37 +2,22 @@ package com.example.foodiary
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.ClipData
-import android.content.ClipDescription
 import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.AdapterView.OnItemLongClickListener
-import androidx.annotation.RequiresApi
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
 import com.example.foodiary.databinding.DateListDialogBinding
 import com.example.foodiary.databinding.ListOfAllDataBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
-import java.util.*
 import kotlin.collections.ArrayList
 
 

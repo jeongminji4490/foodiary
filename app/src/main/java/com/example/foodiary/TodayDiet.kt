@@ -2,21 +2,13 @@ package com.example.foodiary
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager2.widget.ViewPager2
 import com.example.foodiary.databinding.DeleteDietDialogBinding
 import com.example.foodiary.databinding.TodaydietPageBinding
 import kotlinx.coroutines.CoroutineScope

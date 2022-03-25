@@ -2,23 +2,12 @@ package com.example.foodiary
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageButton
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.asLiveData
 import com.example.foodiary.databinding.ActivityMainBinding
-import com.example.foodiary.databinding.MainpageItemBinding
 import com.google.android.material.navigation.NavigationView
-import kotlinx.coroutines.Dispatchers
-import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
