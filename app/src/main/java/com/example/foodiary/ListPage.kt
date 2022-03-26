@@ -42,7 +42,7 @@ class ListPage : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        listOfbinding=DataBindingUtil.inflate(inflater, R.layout.list_of_all_data, container,false)
+        listOfbinding= ListOfAllDataBinding.inflate(inflater)
         return listOfbinding.root
     }
 

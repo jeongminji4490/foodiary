@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import retrofit2.Call
 
 class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository= DiaryRepository(application)
@@ -12,11 +13,16 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private var lList = repository.getLunchAll()
     private var dList = repository.getDinnerAll()
     private var dateList = repository.getDateAll()
+    val fResponse: MutableLiveData<Call<FoodList>> = MutableLiveData()
 
     //UI관련 데이터들은 뷰모델에서 관리
     //LiveData -> MutableLiveData로 수정(livedata는 추상클래스라 객체생성 불가)
     //상단의 리스트에 데이터들을 저장하고, 상단의 리스트들을 리턴하기!
     //insert, delete 코루틴 스코프내에서
+    fun getFoodList() {
+        repository.getFoodList()
+    }
+
     fun getMorningAll(): LiveData<List<morningDiary>> = mList
 
     fun getLunchAll(): LiveData<List<lunchDiary>> = lList

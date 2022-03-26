@@ -3,7 +3,7 @@ package com.example.foodiary
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class foodViewModel: ViewModel() {
+object foodViewModel: ViewModel() { //이거 싱글톤
     val liveData= MutableLiveData<ArrayList<FoodItemInList>>()
     private val data= arrayListOf<FoodItemInList>()
 

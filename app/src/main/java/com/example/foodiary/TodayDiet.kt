@@ -37,7 +37,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding= DataBindingUtil.inflate(inflater,R.layout.todaydiet_page,container,false)
+        binding= TodaydietPageBinding.inflate(inflater)
         return binding.root
     }
 

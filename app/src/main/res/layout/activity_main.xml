@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -84,4 +83,3 @@
 
         <include layout="@layout/drawer"/>
     </androidx.drawerlayout.widget.DrawerLayout>
-</layout>

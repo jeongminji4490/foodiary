@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.example.foodiary.databinding.ActivityMainBinding
 import com.example.foodiary.databinding.LicensePageBinding
 
 class LicensePage: Fragment(), View.OnClickListener {
@@ -19,7 +20,7 @@ class LicensePage: Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.license_page,container,false)
+        binding= LicensePageBinding.inflate(inflater)
         return binding.root
     }
 
