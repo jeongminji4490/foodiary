@@ -2,6 +2,10 @@ package com.example.foodiary
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.domain.date
+import com.example.domain.dinnerDiary
+import com.example.domain.lunchDiary
+import com.example.domain.morningDiary
 
 @Dao
 interface DiaryDao {

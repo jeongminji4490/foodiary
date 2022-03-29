@@ -14,15 +14,12 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.foodiary.DiaryRepository.Companion.TAG
-import com.example.foodiary.FoodClient.foodService
-import com.example.foodiary.databinding.ActivityMainBinding
+import com.example.domain.date
+import com.example.domain.dinnerDiary
+import com.example.domain.lunchDiary
+import com.example.domain.morningDiary
 import com.example.foodiary.databinding.AddDietDialogBinding
 import org.koin.core.component.KoinComponent
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.awaitResponse
 import www.sanju.motiontoast.MotionToast
 import www.sanju.motiontoast.MotionToastStyle
 

@@ -6,9 +6,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.domain.DiaryItemInList
 import com.example.foodiary.databinding.DeleteDietDialogBinding
 import com.example.foodiary.databinding.TodaydietPageBinding
 import kotlinx.coroutines.CoroutineScope

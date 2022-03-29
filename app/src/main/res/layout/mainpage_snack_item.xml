@@ -3,7 +3,7 @@
     <data>
         <variable
             name="diary"
-            type="com.example.foodiary.DiaryItemInList" />
+            type="com.example.domain.DiaryItemInList" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

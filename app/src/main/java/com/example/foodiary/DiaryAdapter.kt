@@ -9,6 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.DiaryItemInList
 import com.example.foodiary.databinding.MainpageItemBinding
 import com.example.foodiary.databinding.MainpageSnackItemBinding
 

@@ -3,6 +3,10 @@ package com.example.foodiary
 import android.app.Application
 import androidx.lifecycle.*
 import androidx.lifecycle.viewModelScope
+import com.example.domain.date
+import com.example.domain.dinnerDiary
+import com.example.domain.lunchDiary
+import com.example.domain.morningDiary
 import kotlinx.coroutines.launch
 import retrofit2.Call
 
