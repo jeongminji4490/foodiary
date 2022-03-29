@@ -14,10 +14,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.domain.date
-import com.example.domain.dinnerDiary
-import com.example.domain.lunchDiary
-import com.example.domain.morningDiary
 import com.example.foodiary.databinding.AddDietDialogBinding
 import org.koin.core.component.KoinComponent
 import www.sanju.motiontoast.MotionToast

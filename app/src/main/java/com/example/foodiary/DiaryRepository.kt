@@ -3,10 +3,6 @@ package com.example.foodiary
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.domain.date
-import com.example.domain.dinnerDiary
-import com.example.domain.lunchDiary
-import com.example.domain.morningDiary
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

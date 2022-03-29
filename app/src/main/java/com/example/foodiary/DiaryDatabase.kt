@@ -4,10 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.domain.date
-import com.example.domain.dinnerDiary
-import com.example.domain.lunchDiary
-import com.example.domain.morningDiary
 
 /**다이어리 DB**/
 @Database(
