@@ -11,7 +11,6 @@ class DiaryRepository(application: Application) {
     private val dao= DiaryDatabase.getInstance(application)!!.DiaryDao()
 
     fun getFoodList() {
-        Log.e(TAG,"getFoodList")
         FoodClient.foodService.getFoodName()
             .enqueue(object: Callback<FoodList> {
                 override fun onResponse(call: Call<FoodList>, response: Response<FoodList>) {

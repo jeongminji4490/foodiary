@@ -13,7 +13,6 @@ class diaryViewModel(application: Application) : AndroidViewModel(application) {
     private var lList = repository.getLunchAll()
     private var dList = repository.getDinnerAll()
     private var dateList = repository.getDateAll()
-    val fResponse: MutableLiveData<Call<FoodList>> = MutableLiveData()
 
     //UI관련 데이터들은 뷰모델에서 관리
     //LiveData -> MutableLiveData로 수정(livedata는 추상클래스라 객체생성 불가)
