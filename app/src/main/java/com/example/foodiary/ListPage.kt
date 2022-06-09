@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.core.content.res.ResourcesCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.foodiary.databinding.DateListDialogBinding
@@ -24,7 +23,7 @@ import kotlin.collections.ArrayList
 class ListPage : Fragment() {
     private lateinit var adapter: DateAdapter //일정 어댑터
     private lateinit var dialogBinding: DateListDialogBinding //식단목록에 대한 바인딩 객체
-    private val viewModel: diaryViewModel by inject()
+    private val viewModel: DiaryViewModel by inject()
     private var dateList= ArrayList<String>() //일정(문자열)을 저장하기 위한 ArrayList
     private val scope by lazy { CoroutineScope(Dispatchers.IO) } //coroutine scope
     private lateinit var dialog: Dialog

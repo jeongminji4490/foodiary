@@ -26,7 +26,7 @@ class AddDialog(private var context: Context) : KoinComponent{
     lateinit var lifecycleOwner: LifecycleOwner //TodayDiet의 생명주기
     lateinit var timeText: String
     lateinit var selectedDate: String //선택된 날짜
-    private lateinit var dViewModel: diaryViewModel //다이어리 DB를 사용하기 위한 다이어리 뷰모델
+    private lateinit var dViewModel: DiaryViewModel //다이어리 DB를 사용하기 위한 다이어리 뷰모델
     private lateinit var dialogBinding: AddDietDialogBinding //추가 다이얼로그에 대한 바인딩 객체
 
     fun showDialog(){
@@ -37,7 +37,7 @@ class AddDialog(private var context: Context) : KoinComponent{
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
 
-        dViewModel=ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application).create(diaryViewModel::class.java)
+        dViewModel=ViewModelProvider.AndroidViewModelFactory.getInstance(context.applicationContext as Application).create(DiaryViewModel::class.java)
 
         val decoration= DividerItemDecoration(context,LinearLayoutManager.VERTICAL)
         val serialNum: Int=0
@@ -58,7 +58,7 @@ class AddDialog(private var context: Context) : KoinComponent{
         //viewmodel에 데이터가 추가될 때마다 searchRecyclerView 실시간 업데이트
         //livedata는 todaydiet의 생명주기에 따라 행동
         //뷰모델 싱글톤으로 바꾸고 해결..!
-        foodViewModel.liveData.observe(lifecycleOwner, Observer {
+        FoodViewModel.liveData.observe(lifecycleOwner, Observer {
             adapter.setData(it)
             dialogBinding.loadingText.visibility=View.GONE //"로딩중" 텍스트 unvisible
             dialogBinding.searchRecyclerView.adapter=adapter
