@@ -22,7 +22,7 @@ class DiaryRepository(application: Application) {
                             for (i: Int in 0..999){ //응답받은 데이터들 중 1000개의 데이터에 대해
                                 val name=it.list.food[i].foodName //음식명
                                 val kcal=it.list.food[i].kcal //1회 제공량당 kcal
-                                foodViewModel.addItem(FoodItemInList(name, kcal)) //뷰모델에 추가
+                                FoodViewModel.addItem(FoodItemInList(name, kcal)) //뷰모델에 추가
                             }
                         }
                     }

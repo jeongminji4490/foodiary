@@ -24,7 +24,7 @@ class TodayDiet : Fragment(), View.OnClickListener {
     private lateinit var selectedDate : String //이동한 날짜
     private lateinit var binding: TodaydietPageBinding //오늘식단 화면에 대한 바인딩 객체
     private val scope by lazy { CoroutineScope(Dispatchers.IO) } //coroutine scope
-    private val dViewModel: diaryViewModel by viewModel()
+    private val dViewModel: DiaryViewModel by viewModel()
     private lateinit var diaryAdapter1: DiaryAdapter //아침식단 어댑터
     private lateinit var diaryAdapter2: DiaryAdapter //점심식단 어댑터
     private lateinit var diaryAdapter3: DiaryAdapter //저녁식단 어댑터

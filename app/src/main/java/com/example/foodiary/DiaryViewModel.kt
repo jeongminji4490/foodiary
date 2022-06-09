@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 
-class diaryViewModel(application: Application) : AndroidViewModel(application) {
+class DiaryViewModel(application: Application) : AndroidViewModel(application) {
     private val repository= DiaryRepository(application)
     private val scope by lazy { viewModelScope }
     private var mList = repository.getMorningAll()
